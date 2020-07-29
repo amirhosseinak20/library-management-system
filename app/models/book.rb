@@ -4,8 +4,8 @@ class Book < ApplicationRecord
   belongs_to :user, foreign_key: :author_id
   has_many :books_languages
   has_many :languages, through: :books_languages
-  has_one :language
-  has_one :genre
+  has_many :books_genres
+  has_many :genres, through: :books_genres
   has_one :publisher
 
   # validations
