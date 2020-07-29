@@ -1,3 +1,6 @@
 class Rate < ApplicationRecord
-  belongs_to :rateable, :polymorphic => true
+  # associations
+  belongs_to :book
+  belongs_to :language
+
 end

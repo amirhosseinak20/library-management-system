@@ -1,7 +1,8 @@
 class Book < ApplicationRecord
   # associations
   include Rateable
-  belongs_to :user, foreign_key: :author_id
+  has_many :rates
+  has_many :users, through: :rates
   has_many :books_languages
   has_many :languages, through: :books_languages
   has_many :books_genres

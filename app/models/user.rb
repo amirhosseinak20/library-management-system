@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   # associations
-  include Rateable
+  has_many :rates
+  has_many :books, through: :rates
 
   # validations
   validates :first_name, :last_name, :nickname, length: { maximum: 50 }
