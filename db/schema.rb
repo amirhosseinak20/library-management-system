@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_28_122857) do
+ActiveRecord::Schema.define(version: 2020_07_29_073308) do
 
   create_table "books", force: :cascade do |t|
     t.string "title"
@@ -28,16 +28,13 @@ ActiveRecord::Schema.define(version: 2020_07_28_122857) do
     t.index ["publisher_id"], name: "index_books_on_publisher_id"
   end
 
-  create_table "books_users", id: false, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "book_id", null: false
-    t.integer "rate"
-    t.integer "book_id_id"
-    t.integer "user_id_id"
+  create_table "books_users", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "book_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["book_id_id"], name: "index_books_users_on_book_id_id"
-    t.index ["user_id_id"], name: "index_books_users_on_user_id_id"
+    t.index ["book_id"], name: "index_books_users_on_book_id"
+    t.index ["user_id"], name: "index_books_users_on_user_id"
   end
 
   create_table "genres", force: :cascade do |t|
@@ -53,32 +50,19 @@ ActiveRecord::Schema.define(version: 2020_07_28_122857) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "privileges", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "publishers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "role_privileges", force: :cascade do |t|
-    t.integer "role_id_id", null: false
-    t.integer "privilege_id_id", null: false
+  create_table "rates", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["privilege_id_id"], name: "index_role_privileges_on_privilege_id_id"
-    t.index ["role_id_id"], name: "index_role_privileges_on_role_id_id"
-  end
-
-  create_table "roles", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.string "rateable_type"
+    t.integer "rateable_id"
+    t.integer "point"
+    t.index ["rateable_type", "rateable_id"], name: "index_rates_on_rateable_type_and_rateable_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -89,12 +73,10 @@ ActiveRecord::Schema.define(version: 2020_07_28_122857) do
     t.string "email"
     t.string "phone"
     t.string "password"
-    t.integer "role_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
-  add_foreign_key "role_privileges", "privilege_ids"
-  add_foreign_key "role_privileges", "role_ids"
+  add_foreign_key "books_users", "books"
+  add_foreign_key "books_users", "users"
 end

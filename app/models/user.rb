@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  # associations
+  include Rateable
+
+  # validations
   validates :first_name, :last_name, :nickname, length: { maximum: 50 }
   validates :first_name, :last_name, :email, :phone, :password, presence: true
   validates :email, format: { with: /\A([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,5})\z/, message: 'please provide valid email!' }

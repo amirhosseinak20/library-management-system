@@ -1,2 +1,0 @@
-class Privilage < ApplicationRecord
-end

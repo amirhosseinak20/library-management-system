@@ -55,3 +55,14 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # datetime validations
 gem 'validates_timeliness'
+
+# rspec
+group :development, :test do
+  # There may be other lines in this block already. Simply append the following after:
+  %w[rspec-core rspec-expectations rspec-mocks rspec-rails rspec-support].each do |lib|
+    # Previously '4-0-dev' or '4-0-maintenance' branch
+    gem lib, git: "https://github.com/rspec/#{lib}.git", branch: 'master'
+  end
+
+  gem 'shoulda-matchers'
+end
