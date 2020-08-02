@@ -6,10 +6,29 @@
     <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= yield :styles %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body style="padding-top: 42px">
+
+    <div class="ui sticky" style="">
+      <div class="ui fluid fixed menu">
+        <!--        <a class="item">Browse</a>-->
+        <!--        <a class="item">Submit</a>-->
+        <div class="right menu">
+          <%# unless user_signed_in? %>
+            <%= link_to 'Sign Up',  new_user_path, class: 'item' %>
+            <%#= link_to 'Sign In', new_user_session_path, class: 'item' %>
+          <%# else %>
+            <%#= link_to 'Edit profile', edit_user_registration_path, class: 'item' %>
+            <%#= link_to "Logout", destroy_user_session_path, method: :delete, class: 'item'  %>
+          <%# end %>
+        </div>
+      </div>
+    </div>
+
     <%= yield %>
+
   </body>
 </html>

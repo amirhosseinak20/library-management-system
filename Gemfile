@@ -66,3 +66,7 @@ group :development, :test do
 
   gem 'shoulda-matchers'
 end
+
+# custom gems
+# styles
+gem 'fomantic-ui-sass'

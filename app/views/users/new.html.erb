@@ -1,0 +1,60 @@
+<%= provide :styles do %>
+  <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+<% end %>
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui teal image header">
+      <div class="content">
+        Signup an account
+      </div>
+    </h2>
+    <%= form_with scope: :user, url: users_path, local:true, class: 'ui large form' do |f| %>
+      <div class="ui stacked segment">
+        <div class="field">
+          <label>First name</label>
+          <%= f.text_field :first_name, required: true, placeholder: 'First Name' %>
+        </div>
+        <div class="field">
+          <label>Last name</label>
+          <%= f.text_field :last_name, required: true, placeholder: 'Last Name' %>
+        </div>
+        <div class="field">
+          <label>Nickname</label>
+          <%= f.text_field :nickname, placeholder: 'Nickname' %>
+        </div>
+        <div class="field">
+          <label>Email</label>
+          <%= f.email_field :email, required: true, placeholder: 'Email' %>
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <%= f.phone_field :phone, required: true, placeholder: 'Phone' %>
+        </div>
+        <div class="field">
+          <label>birth_date</label>
+          <%= f.date_field :birth_date, required: true, placeholder: 'Birth Date' %>
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <%= f.password_field :password, required: true, placeholder: 'Password' %>
+        </div>
+
+        <%= f.submit "Sign up", class: 'ui fluid large teal submit button' %>
+      </div>
+      <div class="ui error message"></div>
+    <% end %>
+  </div>
+</div>
