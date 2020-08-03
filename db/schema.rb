@@ -12,12 +12,12 @@
 
 ActiveRecord::Schema.define(version: 2020_08_03_073745) do
 
-  create_table "books", force: :cascade do |t|
+  create_table "books", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.string "isbn"
     t.date "publication_date"
-    t.integer "author_id"
-    t.integer "publisher_id"
+    t.bigint "author_id"
+    t.bigint "publisher_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.json "attrs"
@@ -25,24 +25,24 @@ ActiveRecord::Schema.define(version: 2020_08_03_073745) do
     t.index ["publisher_id"], name: "index_books_on_publisher_id"
   end
 
-  create_table "books_users", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "book_id"
+  create_table "books_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "book_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["book_id"], name: "index_books_users_on_book_id"
     t.index ["user_id"], name: "index_books_users_on_user_id"
   end
 
-  create_table "publishers", force: :cascade do |t|
+  create_table "publishers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "rates", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "book_id", null: false
+  create_table "rates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "book_id", null: false
     t.integer "point", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_073745) do
     t.index ["user_id"], name: "index_rates_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.string "nickname"
