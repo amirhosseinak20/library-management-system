@@ -4,10 +4,10 @@ class CreateBooks < ActiveRecord::Migration[6.0]
       t.string :title
       t.string :isbn
       t.date :publication_date
-      t.references :author
+      t.integer :pages
       t.references :language
       t.references :genre
-      t.references :publisher
+      t.belongs_to :publisher
 
       t.timestamps
     end

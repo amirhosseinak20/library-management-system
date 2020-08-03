@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_103958) do
+ActiveRecord::Schema.define(version: 2020_08_03_114122) do
 
   create_table "books", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.string "isbn"
     t.date "publication_date"
-    t.bigint "author_id"
+    t.integer "pages"
     t.bigint "publisher_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.json "attrs"
-    t.index ["author_id"], name: "index_books_on_author_id"
+    t.json "genre"
+    t.string "language"
     t.index ["publisher_id"], name: "index_books_on_publisher_id"
   end
 
@@ -34,12 +34,18 @@ ActiveRecord::Schema.define(version: 2020_08_03_103958) do
     t.index ["user_id"], name: "index_books_users_on_user_id"
   end
 
-  create_table "privileges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "permissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
-    t.text "description"
-    t.string "right"
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "permissions_roles", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "permission_id"
+    t.bigint "role_id"
+    t.index ["permission_id"], name: "index_permissions_roles_on_permission_id"
+    t.index ["role_id"], name: "index_permissions_roles_on_role_id"
   end
 
   create_table "publishers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -48,29 +54,11 @@ ActiveRecord::Schema.define(version: 2020_08_03_103958) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "rates", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "book_id", null: false
-    t.integer "point", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["book_id"], name: "index_rates_on_book_id"
-    t.index ["user_id"], name: "index_rates_on_user_id"
-  end
-
   create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
+    t.string "description"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "roles_privileges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "roles_id"
-    t.bigint "privileges_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["privileges_id"], name: "index_roles_privileges_on_privileges_id"
-    t.index ["roles_id"], name: "index_roles_privileges_on_roles_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -98,21 +86,4 @@ ActiveRecord::Schema.define(version: 2020_08_03_103958) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
-  create_table "users_roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "users_id"
-    t.bigint "roles_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["roles_id"], name: "index_users_roles_on_roles_id"
-    t.index ["users_id"], name: "index_users_roles_on_users_id"
-  end
-
-  add_foreign_key "books_users", "books"
-  add_foreign_key "books_users", "users"
-  add_foreign_key "rates", "books"
-  add_foreign_key "rates", "users"
-  add_foreign_key "roles_privileges", "privileges", column: "privileges_id"
-  add_foreign_key "roles_privileges", "roles", column: "roles_id"
-  add_foreign_key "users_roles", "roles", column: "roles_id"
-  add_foreign_key "users_roles", "users", column: "users_id"
 end
