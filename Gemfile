@@ -73,3 +73,5 @@ gem 'fomantic-ui-sass'
 gem 'devise', git: 'https://github.com/heartcombo/devise.git'
 # mysql
 gem 'mysql2'
+# admin
+gem 'rails_admin'
