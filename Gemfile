@@ -70,3 +70,4 @@ end
 # custom gems
 # styles
 gem 'fomantic-ui-sass'
+gem 'devise', git: 'https://github.com/heartcombo/devise.git'

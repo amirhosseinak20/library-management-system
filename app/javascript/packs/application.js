@@ -16,5 +16,7 @@ require("channels")
 // const images = require.context('../images', true)
 // const imagePath = (name) => images(name, true)
 
+// custom modules
 // Loads all Semantic javascripts
 //= require semantic-ui
+global.toastr = require('toastr');

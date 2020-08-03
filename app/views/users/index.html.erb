@@ -1,3 +1,7 @@
-<div class="ui success message">
-  users list
+<div class="ui list">
+  <%= @users.each do |user| %>
+    <div class="item">
+      <div class="header"><%= "#{user.first_name} #{"\"#{user.nickname}\"" if user.nickname} #{user.last_name}" %></div>
+    </div>
+  <% end %>
 </div>

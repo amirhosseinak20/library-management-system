@@ -1,3 +1,5 @@
-<div class="ui success message">
-  user created successfully
+<div class="ui list">
+    <div class="item">
+      <div class="header"><%= "#{@user.first_name} #{"\"#{@user.nickname}\"" if @user.nickname} #{@user.last_name}" %></div>
+    </div>
 </div>

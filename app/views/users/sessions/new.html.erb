@@ -1,0 +1,87 @@
+<!--<h2>Log in</h2>-->
+
+<%#= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<!--  <div class="field">-->
+<!--    <%#= f.label :email %><br />-->
+    <%#= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%#= f.label :password %><br />-->
+    <%#= f.password_field :password, autocomplete: "current-password" %>
+<!--  </div>-->
+
+  <%# if devise_mapping.rememberable? %>
+<!--    <div class="field">-->
+      <%#= f.check_box :remember_me %>
+      <%#= f.label :remember_me %>
+<!--    </div>-->
+  <%# end %>
+
+<!--  <div class="actions">-->
+    <%#= f.submit "Log in" %>
+<!--  </div>-->
+<%# end %>
+
+<%#= render "users/shared/links" %>
+
+<%= content_for :styles do %>
+  <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+<% end %>
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui teal image header">
+      <div class="content">
+        Log-in to your account
+      </div>
+    </h2>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'ui large form' }) do |f| %>
+      <div class="ui stacked left aligned segment">
+        <%= render "users/shared/error_messages", resource: resource %>
+
+        <div class="field">
+            <%= f.label :email, 'Email' %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: 'E-mail' %>
+        </div>
+        <div class="field">
+            <%= f.label :password, 'Password' %>
+            <%= f.password_field :password, autocomplete: "current-password", placeholder: 'password' %>
+        </div>
+        <% if devise_mapping.rememberable? %>
+            <div class="field">
+              <div class="ui checkbox">
+                <%= f.check_box :remember_me %>
+                <%= f.label :remember_me %>
+              </div>
+            </div>
+        <% end %>
+        <%= f.submit "Log in", class: 'ui fluid large teal submit button' %>
+      </div>
+
+      <div class="ui error message"></div>
+    <% end %>
+    <div class="ui message">
+      New to us? <%= link_to 'Sign Up',  new_registration_path(resource_name), class: 'item' %>
+      <br />
+      <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+        <%= link_to "Forgot your password?", new_password_path(resource_name) %><br />
+      <% end %>
+      <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+        <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
+      <% end %>
+    </div>
+  </div>
+</div>

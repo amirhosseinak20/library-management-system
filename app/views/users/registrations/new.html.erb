@@ -1,0 +1,98 @@
+<!--<h2>Sign up</h2>-->
+
+<%#= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%#= render "users/shared/error_messages", resource: resource %>
+
+<!--  <div class="field">-->
+<!--    <%#= f.label :email %><br />-->
+    <%#= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<!--  </div>-->
+
+<!--  <div class="field">-->
+    <%#= f.label :password %>
+    <%# if @minimum_password_length %>
+<!--    <em>(<%#= @minimum_password_length %> characters minimum)</em>-->
+<!--    <%# end %><br />-->
+    <%#= f.password_field :password, autocomplete: "new-password" %>
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%#= f.label :password_confirmation %><br />-->
+    <%#= f.password_field :password_confirmation, autocomplete: "new-password" %>
+<!--  </div>-->
+
+<!--  <div class="actions">-->
+    <%#= f.submit "Sign up" %>
+<!--  </div>-->
+<%# end %>
+
+<%#= render "users/shared/links" %>
+
+<%= content_for :styles do %>
+  <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+<% end %>
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui teal image header">
+      <div class="content">
+        Signup an account
+      </div>
+    </h2>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: 'ui large form' }) do |f| %>
+      <div class="ui stacked left aligned segment">
+        <%= render "users/shared/error_messages", resource: resource %>
+
+        <div class="field">
+          <%= f.label :first_name, 'First Name' %>
+          <%= f.text_field :first_name, required: true, placeholder: 'First Name' %>
+        </div>
+        <div class="field">
+          <%= f.label :last_name, 'Last Name' %>
+          <%= f.text_field :last_name, required: true, placeholder: 'Last Name' %>
+        </div>
+        <div class="field">
+          <%= f.label :nickname, 'Nickname' %>
+          <%= f.text_field :nickname, placeholder: 'Nickname' %>
+        </div>
+        <div class="field">
+          <%= f.label :email, 'E-mail' %>
+          <%= f.email_field :email, required: true, placeholder: 'Email' %>
+        </div>
+        <div class="field">
+          <%= f.label :phone, 'Phone' %>
+          <%= f.phone_field :phone, required: true, placeholder: 'Phone' %>
+        </div>
+        <div class="field">
+          <%= f.label :birth_date, 'Birth Date' %>
+          <%= f.date_field :birth_date, required: true, placeholder: 'Birth Date' %>
+        </div>
+        <div class="field">
+          <%= f.label :password, 'Password' %>
+          <%= f.password_field :password, required: true, placeholder: 'Password' %>
+        </div>
+
+        <%= f.submit "Sign up", class: 'ui fluid large teal submit button' %>
+      </div>
+      <div class="ui message">
+        have account? <%= link_to 'Login',  new_session_path(resource_name), class: 'item' %>
+        <br />
+        <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>
+          <%= link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name) %><br />
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

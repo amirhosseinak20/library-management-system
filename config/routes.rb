@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {
+      registrations: 'users/registrations',
+      confirmations: 'users/confirmations',
+      sessions: 'users/sessions',
+      passwords: 'users/passwords'
+  }
   root 'landing#index'
   get 'landing/index'
   resources :users
