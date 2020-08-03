@@ -7,6 +7,7 @@ class User < ApplicationRecord
   # associations
   has_many :rates
   has_many :books, through: :rates
+  has_one :role
 
   # validations
   validates :first_name, :last_name, :nickname, length: { maximum: 50 }

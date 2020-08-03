@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_073745) do
+ActiveRecord::Schema.define(version: 2020_08_03_103958) do
 
   create_table "books", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
@@ -34,6 +34,14 @@ ActiveRecord::Schema.define(version: 2020_08_03_073745) do
     t.index ["user_id"], name: "index_books_users_on_user_id"
   end
 
+  create_table "privileges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "right"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "publishers", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -48,6 +56,21 @@ ActiveRecord::Schema.define(version: 2020_08_03_073745) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["book_id"], name: "index_rates_on_book_id"
     t.index ["user_id"], name: "index_rates_on_user_id"
+  end
+
+  create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "roles_privileges", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "roles_id"
+    t.bigint "privileges_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["privileges_id"], name: "index_roles_privileges_on_privileges_id"
+    t.index ["roles_id"], name: "index_roles_privileges_on_roles_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -68,13 +91,28 @@ ActiveRecord::Schema.define(version: 2020_08_03_073745) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string "unconfirmed_email"
+    t.bigint "role_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
+  end
+
+  create_table "users_roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "users_id"
+    t.bigint "roles_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["roles_id"], name: "index_users_roles_on_roles_id"
+    t.index ["users_id"], name: "index_users_roles_on_users_id"
   end
 
   add_foreign_key "books_users", "books"
   add_foreign_key "books_users", "users"
   add_foreign_key "rates", "books"
   add_foreign_key "rates", "users"
+  add_foreign_key "roles_privileges", "privileges", column: "privileges_id"
+  add_foreign_key "roles_privileges", "roles", column: "roles_id"
+  add_foreign_key "users_roles", "roles", column: "roles_id"
+  add_foreign_key "users_roles", "users", column: "users_id"
 end
