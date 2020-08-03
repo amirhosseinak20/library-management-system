@@ -1,43 +1,119 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<!--<h2>Edit <%#= resource_name.to_s.humanize %></h2>-->
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= render "users/shared/error_messages", resource: resource %>
+<%#= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%#= render "users/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
-  </div>
+<!--  <div class="field">-->
+<!--    <%#= f.label :email %><br />-->
+    <%#= f.email_field :email, autofocus: true, autocomplete: "email" %>
+<!--  </div>-->
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+  <%# if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+<!--    <div>Currently waiting confirmation for: <%#= resource.unconfirmed_email %></div>-->
+  <%# end %>
 
-  <div class="field">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+<!--  <div class="field">-->
+<!--    <%#= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />-->
+    <%#= f.password_field :password, autocomplete: "new-password" %>
+    <%# if @minimum_password_length %>
+<!--      <br />-->
+<!--      <em><%#= @minimum_password_length %> characters minimum</em>-->
+    <%# end %>
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%#= f.label :password_confirmation %><br />-->
+    <%#= f.password_field :password_confirmation, autocomplete: "new-password" %>
+<!--  </div>-->
+
+<!--  <div class="field">-->
+<!--    <%#= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />-->
+    <%#= f.password_field :current_password, autocomplete: "current-password" %>
+<!--  </div>-->
+
+<!--  <div class="actions">-->
+    <%#= f.submit "Update" %>
+<!--  </div>-->
+<%# end %>
+
+<!--<h3>Cancel my account</h3>-->
+
+<!--<p>Unhappy? <%#= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>-->
+
+<%#= link_to "Back", :back %>
+
+<%= content_for :styles do %>
+  <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+<% end %>
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui teal image header">
+      <div class="content">
+        Edit <%= resource_name.to_s.humanize %>
+      </div>
+    </h2>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put, class: 'ui large form' }) do |f| %>
+      <div class="ui stacked left aligned segment">
+        <%= render "users/shared/error_messages", resource: resource %>
+        <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <div class="ui alert message">Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+        <% end %>
+
+        <div class="field">
+          <%= f.label :first_name, 'First Name' %>
+          <%= f.text_field :first_name, required: true, placeholder: 'First Name' %>
+        </div>
+        <div class="field">
+          <%= f.label :last_name, 'Last Name' %>
+          <%= f.text_field :last_name, required: true, placeholder: 'Last Name' %>
+        </div>
+        <div class="field">
+          <%= f.label :nickname, 'Nickname' %>
+          <%= f.text_field :nickname, placeholder: 'Nickname' %>
+        </div>
+        <div class="field">
+          <%= f.label :email, 'E-mail' %>
+          <%= f.email_field :email, required: true, placeholder: 'Email' %>
+        </div>
+        <div class="field">
+          <%= f.label :phone, 'Phone' %>
+          <%= f.phone_field :phone, required: true, placeholder: 'Phone' %>
+        </div>
+        <div class="field">
+          <%= f.label :birth_date, 'Birth Date' %>
+          <%= f.date_field :birth_date, required: true, placeholder: 'Birth Date' %>
+        </div>
+        <div class="field">
+          <%= f.label :password, 'Password' %>
+          <%= f.password_field :password, placeholder: 'New Password', autocomplete: "new-password" %>
+        </div>
+        <div class="field">
+          <%= f.label :password_confirmation, 'Password Confirmation' %>
+          <%= f.password_field :password_confirmation, placeholder: 'Confirm New Password', autocomplete: "new-password" %>
+        </div>
+        <div class="field">
+          <%= f.label :current_password, 'Password Confirmation' %>
+          <%= f.password_field :current_password, required: true, placeholder: 'Current password', autocomplete: "current-password" %>
+        </div>
+
+        <%= f.submit "Update", class: 'ui fluid large teal submit button' %>
+      </div>
+      <div class="ui message">
+        <%= link_to "Back", :back %>
+      </div>
     <% end %>
   </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update" %>
-  </div>
-<% end %>
-
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
-
-<%= link_to "Back", :back %>
+</div>
