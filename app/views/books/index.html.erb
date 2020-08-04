@@ -1,3 +1,10 @@
+<% content_for :styles do %>
+  <style>
+    .ui.grid > .row > .column {
+      margin-bottom: 1rem !important;
+    }
+  </style>
+<% end %>
 <div class="ui padded doubling stackable grid">
   <div class="ui row">
     <div class="ui four wide column">
@@ -81,7 +88,7 @@
           <% end %>
         </div>
         <% if @count > 1 %>
-          <div class="ui row">
+          <div class="ui row" style="justify-content: center;">
             <div class="ui pagination menu">
               <%= link_to "<<", books_path(page: @page - 1), class: "#{"disabled" if @page == 1} item" %>
               <%= link_to @page < 3 ? "1" : "...", books_path(page: (1 if @page < 3)), class: "#{"active" if @page == 1} #{"disabled" unless @page < 3} item" %>

@@ -3,7 +3,7 @@ class BooksController < ApplicationController
 
   def index
     per_page = 12
-    @count = Book.all.count / per_page
+    @count = Book.all.count / per_page.to_f
     @page = (params[:page] || 1).to_i
     @books = Book.order(params[:order_by] || 'created_at desc').limit(per_page).offset((@page - 1) * per_page)
   end
