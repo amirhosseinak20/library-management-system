@@ -1,3 +1,5 @@
+const queryString = require('query-string');
+
 document.addEventListener('turbolinks:load', () => {
     $('.ui.search')
         .search({
@@ -5,12 +7,12 @@ document.addEventListener('turbolinks:load', () => {
                 url: "/books/search?q={query}"
             },
             fields: {
-                results : 'items',
-                title   : 'title',
-                url     : 'url',
+                results: 'items',
+                title: 'title',
+                url: 'url',
                 description: 'authors'
             },
-            minCharacters : 3
+            minCharacters: 3
         })
     ;
 })

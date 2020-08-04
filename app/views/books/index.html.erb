@@ -1,4 +1,4 @@
-<div class="ui padded grid">
+<div class="ui padded doubling stackable grid">
   <div class="ui row">
     <div class="ui four wide column">
       <div class="ui segment">
@@ -13,15 +13,26 @@
     </div>
     <div class="ui twelve wide column">
       <div class="ui clearing segment">
-        <h1 class="ui left floated header" style="margin: 0;">Title</h1>
+        <h1 class="ui left floated header" style="margin: 0;">Books</h1>
         <div class="ui right floated basic segment" style="margin: 0; padding: 0;">
+          <!--          <div class="ui selection dropdown">-->
+          <!--            <input type="hidden" name="order">-->
+          <!--            <i class="dropdown icon"></i>-->
+          <!--            <div class="menu">-->
+          <%#= link_to "Newest", books_path(order_by: 'created_at desc'), class: "item", html: {"data-value": "created_at desc"} %>
+          <%#= link_to "Oldest", books_path(order_by: 'created_at asc'), class: "item", html: {"data-value": "created_at asc"} %>
+          <!--            </div>-->
+          <!--          </div>-->
+          <!--          <select class="ui selection dropdown">-->
+          <!--            <option value="created_at desc"><%#= link_to "Newest", books_path(order_by: 'created_at desc')%></option>-->
+          <!--            <option value="created_at desc"><%#= link_to "Oldest", books_path(order_by: 'created_at asc')%></option>-->
+          <!--          </select>-->
           <div class="ui selection dropdown">
-            <input type="hidden" name="gender">
+            <div class="text">Newest</div>
             <i class="dropdown icon"></i>
-            <div class="default text">Gender</div>
             <div class="menu">
-              <div class="item" data-value="1">Male</div>
-              <div class="item" data-value="0">Female</div>
+              <%= link_to "Newest", books_path(order_by: 'created_at desc'), "data-text": "Newest", class: "active item" %>
+              <%= link_to "Oldest", books_path(order_by: 'created_at asc'), "data-text": "Oldest", class: "item" %>
             </div>
           </div>
         </div>
@@ -30,57 +41,56 @@
   </div>
   <div class="ui row">
     <div class="ui four wide column">
-      <div class="ui segment">
-        <div class="ui segment">
-          <div class="ui checkbox">
-            <input type="checkbox" name="example">
-            <label>Make my profile visible</label>
-          </div>
-        </div>
-      </div>
+      <!--      <div class="ui segment">-->
+      <!--        <div class="ui segment">-->
+      <!--          <div class="ui checkbox">-->
+      <!--            <input type="checkbox" name="example">-->
+      <!--            <label>Make my profile visible</label>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </div>
     <div class="ui twelve wide column">
       <div class="ui four column grid">
-        <% @books.each do |book| %>
-          <div class="column">
-            <div class="ui fluid card">
-              <div class="image">
-                <%= image_tag "front-cover-placeholder.jpg" %>
-              </div>
-              <div class="content">
-                <%= link_to "#{book.title}", book_path(book.id), class: "header" %>
-                <div class="meta">
-                  <%= book.authors.length == 1 ? "Author" : "Author".pluralize %>:
-                  <% book.authors.each_with_index do |author, index| %>
-                    <%= link_to "#{author.first_name} #{author.last_name}#{"," unless index == book.authors.length - 1}", user_path(author.id) %>
-                  <% end %>
+        <div class="ui row">
+          <% @books.each do |book| %>
+            <div class="column">
+              <div class="ui fluid card">
+                <div class="image">
+                  <%= image_tag "front-cover-placeholder.jpg" %>
                 </div>
-                <!--          <div class="description">-->
-                <!--            Matthew is an interior designer living in New York.-->
-                <!--          </div>-->
+                <div class="content">
+                  <%= link_to truncate("#{book.title}", length: 20, omission: '...'), book_path(book.id), class: "header" %>
+                  <div class="meta">
+                    <%= book.authors.length == 1 ? "Author" : "Author".pluralize %>:
+                    <% book.authors.each_with_index do |author, index| %>
+                      <%= link_to "#{author.first_name} #{author.last_name}#{"," unless index == book.authors.length - 1}", user_path(author.id) %>
+                    <% end %>
+                  </div>
+                  <!--          <div class="description">-->
+                  <!--            Matthew is an interior designer living in New York.-->
+                  <!--          </div>-->
+                </div>
               </div>
+            </div>
+          <% end %>
+          <% if @books.length == 0 %>
+            <div class="ui sixteen wide column">
+              <div class="ui alert fluid message">Nothing was found!</div>
+            </div>
+          <% end %>
+        </div>
+        <% if @count > 1 %>
+          <div class="ui row">
+            <div class="ui pagination menu">
+              <%= link_to "<<", books_path(page: @page - 1), class: "#{"disabled" if @page == 1} item" %>
+              <%= link_to @page < 3 ? "1" : "...", books_path(page: (1 if @page < 3)), class: "#{"active" if @page == 1} #{"disabled" unless @page < 3} item" %>
+              <%= link_to @page < 3 ? "2" : @page, books_path(page: (@page >= 2 ? @page : 2)), class: "#{"active" if @page >= 2} item" %>
+              <%= (link_to @page < 3 ? "3" : "...", books_path(page: (3 if @page < 3)), class: "#{"disabled" unless @page < 3} item") if @count > 2 || @count > @page %>
+              <%= link_to ">>", books_path(page: @page + 1), class: "item" %>
             </div>
           </div>
         <% end %>
-        <div class="ui center aligned row">
-          <div class="ui pagination menu">
-            <a class="active item">
-              1
-            </a>
-            <div class="disabled item">
-              ...
-            </div>
-            <a class="item">
-              10
-            </a>
-            <a class="item">
-              11
-            </a>
-            <a class="item">
-              12
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   </div>

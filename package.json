@@ -8,6 +8,7 @@
     "@rails/webpacker": "4.2.2",
     "expose-loader": "^1.0.0",
     "fomantic-ui-css": "^2.8.6",
+    "query-string": "^6.13.1",
     "toastr": "^2.1.4",
     "turbolinks": "^5.2.0"
   },
