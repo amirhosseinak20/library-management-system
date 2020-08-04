@@ -1,46 +1,59 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>LibraryManagementSystem</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<head>
+  <title>LibraryManagementSystem</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= yield :styles %>
-    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
-  </head>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= yield :styles %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
 
-  <body style="padding-top: 42px">
+<body style="padding-top: 42px">
 
-    <div class="ui sticky" style="">
-      <div class="ui fluid fixed menu">
-        <%= link_to root_path, class: "item", target: "_top" do %>
-          <%= image_tag "books.png" %>
-        <% end %>
-        <!--        <a class="item">Submit</a>-->
-        <div class="right menu">
-          <% unless user_signed_in? %>
-            <%= link_to 'Sign Up',  new_user_registration_path, class: 'item' %>
-            <%= link_to 'Sign In', new_user_session_path, class: 'item' %>
-          <% else %>
-            <%= link_to 'Edit profile', edit_user_registration_path, class: 'item' %>
-            <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'item'  %>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="root">
-      <%= yield %>
-    </div>
-
-    <% unless flash.empty? %>
-      <script type="text/javascript">
-          <% flash.each do |f| %>
-          <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
-          toastr['<%= type %>']('<%= f[1] %>');
-          <% end %>
-      </script>
+<div class="ui sticky" style="">
+  <div class="ui fluid fixed menu">
+    <%= link_to root_path, class: "item", target: "_top" do %>
+      <%= image_tag "books.png" %>
     <% end %>
-  </body>
+    <!--        <a class="item">Submit</a>-->
+    <div class="right menu">
+      <% unless user_signed_in? %>
+        <%= link_to 'Sign Up', new_user_registration_path, class: 'item' %>
+        <%= link_to 'Sign In', new_user_session_path, class: 'item' %>
+      <% else %>
+        <%= link_to 'Edit profile', edit_user_registration_path, class: 'item' %>
+        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'item' %>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<div class="root">
+  <%= yield %>
+</div>
+
+<% unless flash.empty? %>
+  <script type="text/javascript">
+
+      <% flash.each do |f| %>
+      <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+      $('body')
+          .toast({
+              class: '<%= type %>',
+              message: `<%= f[1] %>`
+              , showProgress: 'bottom',
+              position: 'top left',
+              displayTime: 'auto',
+              className: {
+                  toast: 'ui message'
+              },
+              title: '<%= type %>',
+              progressUp: true
+          })
+      <% end %>
+  </script>
+<% end %>
+</body>
 </html>
