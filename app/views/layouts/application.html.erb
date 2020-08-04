@@ -14,7 +14,9 @@
 
     <div class="ui sticky" style="">
       <div class="ui fluid fixed menu">
-        <!--        <a class="item">Browse</a>-->
+        <%= link_to root_path, class: "item", target: "_top" do %>
+          <%= image_tag "books.png" %>
+        <% end %>
         <!--        <a class="item">Submit</a>-->
         <div class="right menu">
           <% unless user_signed_in? %>
@@ -28,7 +30,9 @@
       </div>
     </div>
 
-    <%= yield %>
+    <div class="root">
+      <%= yield %>
+    </div>
 
     <% unless flash.empty? %>
       <script type="text/javascript">

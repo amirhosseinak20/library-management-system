@@ -1,2 +1,69 @@
-<h1>Landing#index</h1>
-<p>Find me in app/views/landing/index.html.erb</p>
+<div class="ui padded grid">
+  <div class="ui row">
+    <div class="ui column">
+      <h2 class="ui header">
+        <%= image_tag "books.png" %>
+        <div class="content">
+          Latest <%= link_to "Books", books_path %>
+        </div>
+      </h2>
+      <div class="ui four column padded grid">
+        <% @books.each do |book| %>
+          <div class="column">
+            <div class="ui fluid card">
+              <div class="image">
+                <%= image_tag "front-cover-placeholder.jpg" %>
+              </div>
+              <div class="content">
+                <%= link_to "#{book.title}", book_path(book.id), class: "header" %>
+                <div class="meta">
+                  <%= book.authors.length == 1 ? "Author" : "Author".pluralize %>:
+                  <% book.authors.each_with_index do |author, index| %>
+                    <%= link_to "#{author.first_name} #{author.last_name}#{"," unless index == book.authors.length - 1}", user_path(author.id) %>
+                  <% end %>
+                </div>
+                <!--          <div class="description">-->
+                <!--            Matthew is an interior designer living in New York.-->
+                <!--          </div>-->
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui eight wide column">
+      <h2 class="ui header">
+        <%= image_tag "author.png" %>
+        <div class="content">
+          Latest <%= link_to "Authors", users_path %>
+        </div>
+      </h2>
+      <div class="ui horizontal cards">
+        <% @authors.each do |author| %>
+          <div class="card">
+            <div class="image">
+              <%= image_tag "author.png" %>
+            </div>
+            <div class="content">
+              <div class="header">
+                <% link_to "#{author.first_name} #{author.last_name}", user_path(author.id) %></div>
+              <div class="meta">
+              </div>
+              <div class="description">
+                <%= author.books.length == 1 ? "Book" : "Book".pluralize %>:
+                <% author.books.each_with_index do |book, index| %>
+                  <%= link_to "#{book.title}#{"," unless index == book.authors.length - 1}", book_path(book.id) %>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="ui eight wide column">
+
+    </div>
+  </div>
+</div>
