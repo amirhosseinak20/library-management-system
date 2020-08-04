@@ -1,12 +1,4 @@
 Rails.application.routes.draw do
-  get 'books/index'
-  get 'books/show'
-  get 'books/create'
-  get 'books/new'
-  get 'books/edit'
-  get 'books/show'
-  get 'books/update'
-  get 'books/destroy'
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   devise_for :users, controllers: {
       registrations: 'users/registrations',
@@ -16,6 +8,7 @@ Rails.application.routes.draw do
   }
   root 'landing#index'
   get 'landing/index'
+  get 'books/search'
   resources :users, :books
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

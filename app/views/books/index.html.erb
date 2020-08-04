@@ -1,2 +1,87 @@
-<h1>Books#index</h1>
-<p>Find me in app/views/books/index.html.erb</p>
+<div class="ui padded grid">
+  <div class="ui row">
+    <div class="ui four wide column">
+      <div class="ui segment">
+        <div class="ui search">
+          <div class="ui left icon fluid input">
+            <%= text_field_tag :search, params[:q], class: "prompt", placeholder: "Search books..." %>
+            <i class="search icon"></i>
+          </div>
+          <div class="results"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ui twelve wide column">
+      <div class="ui clearing segment">
+        <h1 class="ui left floated header" style="margin: 0;">Title</h1>
+        <div class="ui right floated basic segment" style="margin: 0; padding: 0;">
+          <div class="ui selection dropdown">
+            <input type="hidden" name="gender">
+            <i class="dropdown icon"></i>
+            <div class="default text">Gender</div>
+            <div class="menu">
+              <div class="item" data-value="1">Male</div>
+              <div class="item" data-value="0">Female</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui four wide column">
+      <div class="ui segment">
+        <div class="ui segment">
+          <div class="ui checkbox">
+            <input type="checkbox" name="example">
+            <label>Make my profile visible</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui twelve wide column">
+      <div class="ui four column grid">
+        <% @books.each do |book| %>
+          <div class="column">
+            <div class="ui fluid card">
+              <div class="image">
+                <%= image_tag "front-cover-placeholder.jpg" %>
+              </div>
+              <div class="content">
+                <%= link_to "#{book.title}", book_path(book.id), class: "header" %>
+                <div class="meta">
+                  <%= book.authors.length == 1 ? "Author" : "Author".pluralize %>:
+                  <% book.authors.each_with_index do |author, index| %>
+                    <%= link_to "#{author.first_name} #{author.last_name}#{"," unless index == book.authors.length - 1}", user_path(author.id) %>
+                  <% end %>
+                </div>
+                <!--          <div class="description">-->
+                <!--            Matthew is an interior designer living in New York.-->
+                <!--          </div>-->
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <div class="ui center aligned row">
+          <div class="ui pagination menu">
+            <a class="active item">
+              1
+            </a>
+            <div class="disabled item">
+              ...
+            </div>
+            <a class="item">
+              10
+            </a>
+            <a class="item">
+              11
+            </a>
+            <a class="item">
+              12
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -25,3 +25,5 @@ const semanticUI = require('fomantic-ui-css/semantic');
 document.addEventListener('turbolinks:load', () => {
 
 })
+
+require('./books')
