@@ -9,17 +9,17 @@
 roles = Role.create([{ name: 'student' }, { name: 'author' }, { name: 'admin' }])
 permissions = Permission.create([
                                   {
-                                    name: 'createBook',
+                                    name: 'create_book',
                                     description: 'This privilege grants user to create books'
                                   }, {
-                                    name: 'editBooks',
+                                    name: 'edit_book',
                                     description: 'This privilege grants user to edit books'
                                   }, {
-                                    name: 'deleteBooks',
+                                    name: 'delete_book',
                                     description: 'This privilege grants user to delete books'
                                   }, {
-                                    name: 'seeBooks',
-                                    description: 'This privilege grants user to see books'
+                                      name: 'borrow_book',
+                                      description: 'This privilege grants user to see books'
                                   }
                                 ])
 roles[0].permissions = [permissions[3]]

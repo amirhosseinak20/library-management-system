@@ -1,0 +1,2 @@
+class Semafor < ApplicationRecord
+end

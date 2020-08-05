@@ -1,0 +1,2 @@
+module SemaforsHelper
+end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_114122) do
+ActiveRecord::Schema.define(version: 2020_08_05_080150) do
 
   create_table "books", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(version: 2020_08_03_114122) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["book_id"], name: "index_books_users_on_book_id"
     t.index ["user_id"], name: "index_books_users_on_user_id"
+  end
+
+  create_table "borrows", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "book_id"
+    t.date "borrow_date"
+    t.date "return_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["book_id"], name: "index_borrows_on_book_id"
+    t.index ["user_id"], name: "index_borrows_on_user_id"
   end
 
   create_table "permissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|

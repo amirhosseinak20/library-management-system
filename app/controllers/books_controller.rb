@@ -8,15 +8,19 @@ class BooksController < ApplicationController
     @books = Book.order(params[:order_by] || 'created_at desc').limit(per_page).offset((@page - 1) * per_page)
   end
 
-  def show; end
+  def show
+    @book = Book.find(params[:id])
+    @current_user = current_user || User.new
+    puts "-----------------------"
+    puts current_user.id
+    puts "-----------------------"
+  end
 
   def create; end
 
   def new; end
 
   def edit; end
-
-  def show; end
 
   def update; end
 
