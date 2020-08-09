@@ -15,6 +15,8 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
+    @borrow = @current_user.borrows.joins(:book).where(books: { id: @book.id }, return_date: nil)[0]
+    @can_borrow = @current_user.can_borrow_book? && @current_user.borrows.where(return_date: nil).length < 2 && @borrow.nil?
   end
 
   def create
@@ -43,9 +45,9 @@ class BooksController < ApplicationController
     @genres = Book.select(:genre).map(&:genre).flatten.uniq
     @publishers = Publisher.select(:name, :id)
     if @current_user.is_an_author?
-      @authors = [{name: "#{@user.first_name} #{@user.last_name}", id: @user.id}]
+      @authors = [{ name: "#{@user.first_name} #{@user.last_name}", id: @user.id }]
     else
-      @authors = User.select(:first_name, :last_name, :id).where(role: 'author').map { |a| {name: "#{a.first_name} #{a.last_name}", id: a.id} }
+      @authors = User.select(:first_name, :last_name, :id).where(role: 'author').map { |a| { name: "#{a.first_name} #{a.last_name}", id: a.id } }
     end
   end
 
@@ -66,13 +68,13 @@ class BooksController < ApplicationController
   def search
     @q_books = Book.where("title like ?", "%#{params[:q]}%").limit(5)
     render json: {
-        items: @q_books.map do |item|
-          {
-              title: item.title,
-              url: book_path(item.id),
-              authors: item.authors.map { |elem| "#{elem.first_name} #{elem.last_name}" }.join(", ")
-          }
-        end
+      items: @q_books.map do |item|
+        {
+          title: item.title,
+          url: book_path(item.id),
+          authors: item.authors.map { |elem| "#{elem.first_name} #{elem.last_name}" }.join(", ")
+        }
+      end
     }
   end
 

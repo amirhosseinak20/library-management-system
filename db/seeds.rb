@@ -19,12 +19,15 @@ permissions = Permission.create([
                                     description: 'This privilege grants user to delete books'
                                   }, {
                                       name: 'borrow_book',
-                                      description: 'This privilege grants user to see books'
+                                      description: 'This privilege grants user to borrow books'
+                                  }, {
+                                      name: 'create_author',
+                                      description: 'This privilege grants user to create authors'
                                   }
                                 ])
-roles[0].permissions = [permissions[3]]
-roles[1].permissions = [permissions[3], permissions[1], permissions[0]]
-roles[2].permissions = [permissions[3], permissions[2], permissions[1], permissions[0]]
+roles[0].permissions = [permissions[3], permissions[4]]
+roles[1].permissions = [permissions[3], permissions[1], permissions[0], permissions[4]]
+roles[2].permissions = [permissions[3], permissions[2], permissions[1], permissions[0], permissions[4]]
 roles.each(&:save)
 
 users = User.create([

@@ -2,10 +2,18 @@
   <div class="ui six wide column">
     <%= image_tag 'front-cover-placeholder.jpg', style: "width: 100%" %>
     <div class="ui list">
-      <% if @current_user.can_borrow_book? %>
+      <% if @can_borrow  %>
         <div class="item">
           <%= form_with(url: book_borrows_path(book_id: @book.id), method: "post", local: true) do |form| %>
             <%= form.button "Borrow", class: "ui fluid violet button" %>
+          <% end %>
+        </div>
+      <% end %>
+      <% if !@borrow.nil? %>
+        <div class="item">
+          <%= form_with(url: book_borrow_path(book_id: @book.id, id: @borrow[:id]), html: { method: :patch }, local: true) do |form| %>
+            <%= form.hidden_field :return_date, value: Date.today %>
+            <%= form.button "Return", class: "ui fluid blue button" %>
           <% end %>
         </div>
       <% end %>

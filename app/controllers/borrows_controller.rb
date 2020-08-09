@@ -8,7 +8,7 @@ class BorrowsController < ApplicationController
   def create
     @book = Book.find(params[:book_id])
     @user = current_user
-    @borrow = Borrow.new({ user_id: @user.id, book_id: params[:book_id], borrow_date: Date.today })
+    @borrow = Borrow.new({user_id: @user.id, book_id: params[:book_id], borrow_date: Date.today})
 
     respond_to do |format|
       if @borrow.save
@@ -20,6 +20,15 @@ class BorrowsController < ApplicationController
   end
 
   def update
+    @borrow = Borrow.find(params[:id])
+    @book = Book.find(params[:book_id])
+    respond_to do |format|
+      if @borrow.update(borrow_update_params)
+        format.html { redirect_to @book, notice: 'Book returned successfully.' }
+      else
+        format.html { render :edit }
+      end
+    end
   end
 
   def destroy
@@ -32,5 +41,9 @@ class BorrowsController < ApplicationController
 
   def borrow_params
     params.require(:borrow).permit(:book_id)
+  end
+
+  def borrow_update_params
+    params.permit(:return_date)
   end
 end

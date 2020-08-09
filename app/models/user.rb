@@ -13,12 +13,12 @@ class User < ApplicationRecord
   has_and_belongs_to_many :books
 
   # validations
-  validates :first_name, :last_name, :nickname, length: {maximum: 50}
+  validates :first_name, :last_name, :nickname, length: { maximum: 50 }
   validates :first_name, :last_name, :email, :phone, :password, presence: true
-  validates :email, format: {with: /\A([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,5})\z/, message: 'please provide valid email!'}
-  validates :first_name, :last_name, format: {with: /\A[a-zA-Z]+\z/, message: 'Please provide valid name'}
+  validates :email, format: { with: /\A([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-]+)\.([a-zA-Z]{2,5})\z/, message: 'please provide valid email!' }
+  validates :first_name, :last_name, format: { with: /\A[a-zA-Z]+\z/, message: 'Please provide valid name' }
   validates_date :birth_date, before: -> { Date.today }, before_message: 'must be before today'
-  validates :phone, format: {with: /\A\+\d{12}\z/}, length: {is: 13}
+  validates :phone, format: { with: /\A\+\d{12}\z/ }, length: { is: 13 }
 
   def initialize(args)
     #
@@ -49,12 +49,12 @@ class User < ApplicationRecord
   end
 
   def signed_in?
-    !self.role.nil?
+    !role.nil?
   end
 
   def author?(book_id)
-    if (is_an_author?)
-      !books.where({books: {id: book_id}}).empty?
+    if is_an_author?
+      !books.where({ books: { id: book_id } }).empty?
     else
       true
     end
