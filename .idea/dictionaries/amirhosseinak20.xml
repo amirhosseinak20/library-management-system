@@ -19,6 +19,7 @@
       <w>mifflin</w>
       <w>minitest</w>
       <w>shoulda</w>
+      <w>sidekiq</w>
       <w>superadmin</w>
       <w>turbolinks</w>
       <w>webdrivers</w>

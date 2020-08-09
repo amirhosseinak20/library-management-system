@@ -75,3 +75,5 @@ gem 'devise', git: 'https://github.com/heartcombo/devise.git'
 gem 'mysql2'
 # admin
 gem 'rails_admin'
+# job queue
+gem 'sidekiq'

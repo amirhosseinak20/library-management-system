@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:notify]
+
   def index
     @users = User.all
   end
@@ -26,8 +28,7 @@ class UsersController < ApplicationController
     end
   end
 
-  # private
-  #
+  private
   def users_params
     params.require(:user).permit(:first_name, :last_name, :nickname, :phone, :birth_date, :password, :email)
   end
