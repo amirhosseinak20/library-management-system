@@ -1,0 +1,77 @@
+<%= content_for :styles do %>
+  <style>
+    body {
+      background-color: #DADADA;
+    }
+    body > .grid {
+      height: 100%;
+    }
+    .image {
+      margin-top: -100px;
+    }
+    .column {
+      max-width: 450px;
+    }
+  </style>
+<% end %>
+<div class="ui middle aligned center aligned grid">
+  <div class="column">
+    <h2 class="ui teal image header">
+      <div class="content">
+        Register an account
+      </div>
+    </h2>
+    <%= form_with model: @user, url: users_path, html: { class: 'ui large form' }, local: true do |f| %>
+      <div class="ui stacked left aligned segment">
+        <div class="field">
+          <%= f.label :first_name, 'First Name' %>
+          <%= f.text_field :first_name, required: true, placeholder: 'First Name' %>
+        </div>
+        <div class="field">
+          <%= f.label :last_name, 'Last Name' %>
+          <%= f.text_field :last_name, required: true, placeholder: 'Last Name' %>
+        </div>
+        <div class="field">
+          <%= f.label :nickname, 'Nickname' %>
+          <%= f.text_field :nickname, placeholder: 'Nickname' %>
+        </div>
+        <div class="field">
+          <%= f.label :email, 'E-mail' %>
+          <%= f.email_field :email, required: true, placeholder: 'Email' %>
+        </div>
+        <div class="field">
+          <%= f.label :phone, 'Phone' %>
+          <%= f.phone_field :phone, required: true, placeholder: 'Phone' %>
+        </div>
+        <div class="field">
+          <%= f.label :birth_date, 'Birth Date' %>
+          <%= f.date_field :birth_date, required: true, placeholder: 'Birth Date' %>
+        </div>
+        <div class="field">
+          <%= f.label :password, 'Password' %>
+          <%= f.password_field :password, required: true, placeholder: 'Password' %>
+        </div>
+        <div class="field">
+          <%= f.label :role_id, 'Role' %>
+          <div class="ui fluid disabled search selection dropdown deny-addition">
+            <%= f.hidden_field :role_id, required: true, placeholder: 'Role', value: @user.role_id %>
+            <i class="dropdown icon"></i>
+            <div class="default text">Role</div>
+            <div class="menu">
+              <% @roles.each do |r| %>
+                <div class="item" data-value="<%= r.id %>"><%= r.name %></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <%= f.submit "Register", class: 'ui fluid large teal submit button' %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<script>
+    $(".ui.deny-addition.dropdown").dropdown();
+    $(".ui.calendar").calendar({type: 'date',})
+</script>

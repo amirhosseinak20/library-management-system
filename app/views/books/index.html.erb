@@ -62,23 +62,7 @@
         <div class="ui row">
           <% @books.each do |book| %>
             <div class="column">
-              <div class="ui fluid card">
-                <div class="image">
-                  <%= image_tag "front-cover-placeholder.jpg" %>
-                </div>
-                <div class="content">
-                  <%= link_to truncate("#{book.title}", length: 20, omission: '...'), book_path(book.id), class: "header" %>
-                  <div class="meta">
-                    <%= book.authors.length == 1 ? "Author" : "Author".pluralize %>:
-                    <% book.authors.each_with_index do |author, index| %>
-                      <%= link_to "#{author.first_name} #{author.last_name}#{"," unless index == book.authors.length - 1}", user_path(author.id) %>
-                    <% end %>
-                  </div>
-                  <!--          <div class="description">-->
-                  <!--            Matthew is an interior designer living in New York.-->
-                  <!--          </div>-->
-                </div>
-              </div>
+              <%= render 'books/card', title: book.title, id: book.id, authors: book.authors %>
             </div>
           <% end %>
           <% if @books.length == 0 %>

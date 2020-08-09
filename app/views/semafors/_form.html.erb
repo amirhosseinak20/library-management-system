@@ -1,4 +1,4 @@
-<%= form_with(model: semafor, local: true) do |form| %>
+<%= form_with(model: semafor, local: true) do |f| %>
   <% if semafor.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(semafor.errors.count, "error") %> prohibited this semafor from being saved:</h2>
@@ -10,6 +10,44 @@
       </ul>
     </div>
   <% end %>
+
+  <div class="ui stacked left aligned segment">
+    <div class="field">
+      <%= f.label :title, 'Title' %>
+      <%= f.text_field :title, required: true, placeholder: 'Title' %>
+    </div>
+    <div class="field">
+      <%= f.label :isbn, 'ISBN' %>
+      <%= f.text_field :isbn, required: true, placeholder: 'Last Name', html: { minlength: 10, maxlength: 12 } %>
+    </div>
+    <div class="field">
+      <%= f.label :publication_date, 'Publication Date' %>
+      <div class="ui calendar">
+        <div class="ui input left icon">
+          <i class="calendar icon"></i>
+          <%= f.text_field :publication_date, required: true, placeholder: 'Publication Date' %>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <%= f.label :pages, 'Pages' %>
+      <%= f.tex :pages, required: true, placeholder: 'Pages' %>
+    </div>
+    <div class="field">
+      <%= f.label :phone, 'Phone' %>
+      <%= f.phone_field :phone, required: true, placeholder: 'Phone' %>
+    </div>
+    <div class="field">
+      <%= f.label :birth_date, 'Birth Date' %>
+      <%= f.date_field :birth_date, required: true, placeholder: 'Birth Date' %>
+    </div>
+    <div class="field">
+      <%= f.label :password, 'Password' %>
+      <%= f.password_field :password, required: true, placeholder: 'Password' %>
+    </div>
+
+    <%= f.submit "Sign up", class: 'ui fluid large teal submit button' %>
+  </div>
 
   <div class="actions">
     <%= form.submit %>

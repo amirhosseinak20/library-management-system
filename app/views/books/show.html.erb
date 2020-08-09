@@ -9,7 +9,7 @@
           <% end %>
         </div>
       <% end %>
-      <% if @current_user.can_edit_book? %>
+      <% if can_update? %>
         <div class="item">
           <%= link_to "Edit", edit_book_path(id: @book.id), class: "ui fluid green button"%>
         </div>

@@ -3,14 +3,14 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-         # ,:confirmable
+  # ,:confirmable
 
   # associations
+  has_many :borrows
+  has_many :books, through: :borrows
   belongs_to :role
   delegate :permissions, to: :role, allow_nil: true
   has_and_belongs_to_many :books
-  has_many :borrows
-  has_many :books, through: :borrows
 
   # validations
   validates :first_name, :last_name, :nickname, length: {maximum: 50}
@@ -19,6 +19,17 @@ class User < ApplicationRecord
   validates :first_name, :last_name, format: {with: /\A[a-zA-Z]+\z/, message: 'Please provide valid name'}
   validates_date :birth_date, before: -> { Date.today }, before_message: 'must be before today'
   validates :phone, format: {with: /\A\+\d{12}\z/}, length: {is: 13}
+
+  def initialize(args)
+    #
+    # do whatever, args are passed to super
+    #
+    if args && args['role_id'].nil?
+      args['role_id'] = Role.where(name: 'student').first.id
+      puts args
+    end
+    super
+  end
 
   def method_missing(method_id, *args)
     if (match = matches_dynamic_role_check?(method_id))
@@ -35,6 +46,18 @@ class User < ApplicationRecord
 
   def respond_to_missing?(method_name, include_private = false)
     matches_dynamic_role_check?(method_name) || super
+  end
+
+  def signed_in?
+    !self.role.nil?
+  end
+
+  def author?(book_id)
+    if (is_an_author?)
+      !books.where({books: {id: book_id}}).empty?
+    else
+      true
+    end
   end
 
   private
