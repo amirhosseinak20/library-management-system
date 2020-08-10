@@ -1,11 +1,19 @@
+ITEMS_PER_PAGE = 12
+
 class BooksController < ApplicationController
-  before_action :can_update?, only: [:update]
+  include ApplicationHelper
 
   def index
-    @items_count = 12
-    @count = Book.all.count / @items_count.to_f
-    @page = (params[:page] || 1).to_i
-    @books = Book.order(params[:order_by] || 'created_at desc').limit(@items_count).offset((@page - 1) * @items_count)
+    @pagination = {
+      items_per_page: ITEMS_PER_PAGE,
+      items_count: Book.all.count,
+      current_page: numeric?(params[:page]) && params[:page].to_i.positive? ? params[:page].to_i : 1,
+      last_page: (Book.all.count / ITEMS_PER_PAGE.to_f).ceil,
+      order: params[:order_by] || 'created_at-desc'
+    }
+    @books = Book.order(@pagination[:order].gsub("-", " "))
+                 .limit(@pagination[:items_per_page])
+                 .offset((@pagination[:current_page] - 1) * @pagination[:items_per_page])
     respond_to do |format|
       format.json
       format.html
@@ -14,7 +22,7 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
-    @borrow = @current_user.borrows.joins(:book).where(books: { id: @book.id }, return_date: nil)[0]
+    @borrow = @current_user.borrows.joins(:book).where(books: {id: @book.id}, return_date: nil)[0]
     @can_borrow = @current_user.can_borrow_book? && @current_user.borrows.where(return_date: nil).length < 2 && @borrow.nil?
   end
 
@@ -32,9 +40,9 @@ class BooksController < ApplicationController
     @genres = Book.select(:genre).map(&:genre).flatten.uniq
     @publishers = Publisher.select(:name, :id)
     if @current_user.is_an_author?
-      @authors = [{ name: "#{@current_user.first_name} #{@current_user.last_name}", id: @current_user.id }]
+      @authors = [{name: "#{@current_user.first_name} #{@current_user.last_name}", id: @current_user.id}]
     else
-      @authors = User.joins(:role).where(roles: { name: 'author' }).map { |a| { name: "#{a.first_name} #{a.last_name}", id: a.id } }
+      @authors = User.joins(:role).where(roles: {name: 'author'}).map { |a| {name: "#{a.first_name} #{a.last_name}", id: a.id} }
     end
     puts @authors
   end
@@ -44,9 +52,9 @@ class BooksController < ApplicationController
     @genres = Book.select(:genre).map(&:genre).flatten.uniq
     @publishers = Publisher.select(:name, :id)
     if @current_user.is_an_author?
-      @authors = [{ name: "#{@current_user.first_name} #{@current_user.last_name}", id: @current_user.id }]
+      @authors = [{name: "#{@current_user.first_name} #{@current_user.last_name}", id: @current_user.id}]
     else
-      @authors = User.select(:first_name, :last_name, :id).where(role: 'author').map { |a| { name: "#{a.first_name} #{a.last_name}", id: a.id } }
+      @authors = User.select(:first_name, :last_name, :id).where(role: 'author').map { |a| {name: "#{a.first_name} #{a.last_name}", id: a.id} }
     end
   end
 
@@ -70,8 +78,8 @@ class BooksController < ApplicationController
       items: @q_books.map do |item|
         {
           title: item.title,
-          url: book_path(item.id),
-          authors: item.authors.map { |elem| "#{elem.first_name} #{elem.last_name}" }.join(", ")
+            url: book_path(item.id),
+            authors: item.authors.map { |elem| "#{elem.first_name} #{elem.last_name}" }.join(", ")
         }
       end
     }
@@ -82,6 +90,7 @@ class BooksController < ApplicationController
   def can_update?
     @current_user.author?(params[:id])
   end
+
   helper_method :can_update?
 
   def book_params

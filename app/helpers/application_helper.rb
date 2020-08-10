@@ -18,4 +18,14 @@ module ApplicationHelper
       gravatar_image_url(current_user&.email)
     end
   end
+
+  def numeric?(str)
+    return true if str =~ /\A\d+\Z/
+
+    begin
+      true if Float(str)
+    rescue StandardError
+      false
+    end
+  end
 end

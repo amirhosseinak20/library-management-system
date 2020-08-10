@@ -30,24 +30,11 @@
       <div class="ui clearing segment">
         <h1 class="ui left floated header" style="margin: 0;">Books</h1>
         <div class="ui right floated basic segment" style="margin: 0; padding: 0;">
-          <!--          <div class="ui selection dropdown">-->
-          <!--            <input type="hidden" name="order">-->
-          <!--            <i class="dropdown icon"></i>-->
-          <!--            <div class="menu">-->
-          <%#= link_to "Newest", books_path(order_by: 'created_at desc'), class: "item", html: {"data-value": "created_at desc"} %>
-          <%#= link_to "Oldest", books_path(order_by: 'created_at asc'), class: "item", html: {"data-value": "created_at asc"} %>
-          <!--            </div>-->
-          <!--          </div>-->
-          <!--          <select class="ui selection dropdown">-->
-          <!--            <option value="created_at desc"><%#= link_to "Newest", books_path(order_by: 'created_at desc')%></option>-->
-          <!--            <option value="created_at desc"><%#= link_to "Oldest", books_path(order_by: 'created_at asc')%></option>-->
-          <!--          </select>-->
           <div class="ui selection dropdown">
-            <div class="text">Newest</div>
+            <input type="hidden" name="order">
             <i class="dropdown icon"></i>
+            <div class="default text">Order</div>
             <div class="menu">
-              <%= link_to "Newest", books_path(order_by: 'created_at desc'), "data-text": "Newest", class: "active item" %>
-              <%= link_to "Oldest", books_path(order_by: 'created_at asc'), "data-text": "Oldest", class: "item" %>
             </div>
           </div>
         </div>
@@ -56,40 +43,11 @@
   </div>
   <div class="ui row">
     <div class="ui four wide column">
-      <!--      <div class="ui segment">-->
-      <!--        <div class="ui segment">-->
-      <!--          <div class="ui checkbox">-->
-      <!--            <input type="checkbox" name="example">-->
-      <!--            <label>Make my profile visible</label>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
     </div>
     <div class="ui twelve wide column">
       <div class="ui four column grid">
         <div class="ui row data-container">
-          <%# @books.each do |book| %>
-          <!--                      <div class="column">-->
-          <%#= render 'books/card', title: book.title, id: book.id, authors: book.authors %>
-          <!--                      </div>-->
-          <%# end %>
-          <%# if @books.length == 0 %>
-          <!--                      <div class="ui sixteen wide column">-->
-          <!--                        <div class="ui alert fluid message">Nothing was found!</div>-->
-          <!--                      </div>-->
-          <%# end %>
         </div>
-        <%# if @count > 1 %>
-        <!--          <div class="ui row" style="justify-content: center;">-->
-        <!--            <div class="ui pagination menu">-->
-        <%#= link_to "<<", books_path(page: @page - 1), class: "#{"disabled" if @page == 1} item" %>
-        <%#= link_to @page < 3 ? "1" : "...", books_path(page: (1 if @page < 3)), class: "#{"active" if @page == 1} #{"disabled" unless @page < 3} item" %>
-        <%#= link_to @page < 3 ? "2" : @page, books_path(page: (@page >= 2 ? @page : 2)), class: "#{"active" if @page >= 2} item" %>
-        <%#= (link_to @page < 3 ? "3" : "...", books_path(page: (3 if @page < 3)), class: "#{"disabled" unless @page < 3} item") if @count > 2 || @count > @page %>
-        <%#= link_to ">>", books_path(page: @page + 1), class: "item" %>
-        <!--            </div>-->
-        <!--          </div>-->
-        <%# end %>
         <div class="ui row" style="justify-content: center;">
           <div class="ui pagination menu">
             <div class="item"><<</div>
@@ -105,109 +63,142 @@
 </div>
 <script>
     let data;
-    let currentPage = 1;
+    let currentPage = <%= @pagination[:current_page] %>;
+    let order = "<%= @pagination[:order] %>";
+    const dataContainer = $(".data-container");
+    const paginationItems = [
+        $(".ui.pagination.menu .item:nth-child(1)"),
+        $(".ui.pagination.menu .item:nth-child(2)"),
+        $(".ui.pagination.menu .item:nth-child(3)"),
+        $(".ui.pagination.menu .item:nth-child(4)"),
+        $(".ui.pagination.menu .item:nth-child(5)"),
+    ]
+    const paginationMenu = $(".ui.pagination.menu");
 
-    async function getData(page = 1) {
-        $(".data-container").html("");
+    const card = (image, url, title, authors) => `
+      <div class="column">
+        <div class="ui fluid card">
+          <div class="image">
+            <img src="${image}" class="ui image" alt="cover" />
+          </div>
+          <div class="content">
+            <a href="${url}">${_.truncate(title, {length: 24})}</a>
+            <div class="meta">
+              <h4 class="ui header" style="margin-top: 1rem;">${authors.length > 1 ? "Authors" : "Author"}</h4>
+              <div class="ui list">
+              ${authors.map(item => `
+                    <a href="${item.url}" class="item">
+                      <img class="ui avatar image" src="${item.avatar}" alt="avatar">
+                      <div class="content">
+                        <div class="description">
+                          ${item.name}
+                        </div>
+                      </div>
+                    </a>
+                  `).join("")}
+              </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    async function getData(page = 1, orderBy = 'created_at-desc') {
+        dataContainer.html("");
+
+        // fetch request
         const options = {
             method: "GET",
             headers: new Headers({'content-type': 'application/json'}),
             mode: 'no-cors'
         };
-        const res = await fetch(`/books?page=${page}`, options);
+        const res = await fetch(`/books?page=${page}&order_by=${orderBy}`, options);
         data = await res.json();
-        const card = (image, url, title, authors) => `
-            <div class="column">
-              <div class="ui fluid card">
-                <div class="image">
-                  <img src="${image}" class="ui image" alt="cover" />
-                </div>
-                <div class="content">
-                  <a href="${url}">${_.truncate(title, { length: 24 })}</a>
-                  <div class="meta">
-                    <h4 class="ui header" style="margin-top: 1rem;">${authors.length > 1 ? "Authors" : "Author"}</h4>
-                    <div class="ui list">
-                    ${authors.map(item => `
-                          <a href="${item.url}" class="item">
-                            <img class="ui avatar image" src="${item.avatar}" alt="avatar">
-                            <div class="content">
-                              <div class="description">
-                                ${item.name}
-                              </div>
-                            </div>
-                          </a>
-                        `).join("")}
-                    </div>
-                </div>
-              </div>
-            </div>
-          `;
-        $(".data-container").append(data.books.map(item => card(item.image, item.url, item.title, item.authors)));
-        currentPage = data.pagination.page
-        if (data.pagination.count > 1) {
-            $(".ui.pagination.menu .item:nth-child(2)").text(data.pagination.page > 2 ? "..." : "1")
-            $(".ui.pagination.menu .item:nth-child(3)").text(data.pagination.page === 1 ? "2" : data.pagination.page)
-            $(".ui.pagination.menu .item:nth-child(4)").text("...")
+
+        // data rendering
+        dataContainer.append(data["books"].map(item => card(item["image"], item["url"], item["title"], item["authors"])));
+        currentPage = data["pagination"]["current_page"];
+        order = data["pagination"]["order"];
+
+        // resetting events
+        if (data["pagination"]["last_page"] > 1) {
+            paginationItems[1].text(data["pagination"]["current_page"] > 2 ? "..." : "1")
+            paginationItems[2].text(data["pagination"]["current_page"] === 1 ? "2" : data["pagination"]["current_page"])
+            paginationItems[3].text("...")
         } else {
-            $(".ui.pagination.menu").style.display = "none"
+            paginationMenu.style.display = "none"
         }
         if (currentPage <= 1) {
-            $(".ui.pagination.menu .item:nth-child(1)").addClass("disabled")
-            $(".ui.pagination.menu .item:nth-child(2)").addClass("disabled active")
-            $(".ui.pagination.menu .item:nth-child(4)").addClass("disabled")
+            paginationItems[0].addClass("disabled")
+            paginationItems[1].addClass("disabled active")
+            paginationItems[3].addClass("disabled")
         } else {
-            $(".ui.pagination.menu .item:nth-child(1)").removeClass("disabled")
-            $(".ui.pagination.menu .item:nth-child(2)").removeClass("disabled active")
-            $(".ui.pagination.menu .item:nth-child(4)").removeClass("disabled")
+            paginationItems[0].removeClass("disabled")
+            paginationItems[1].removeClass("disabled active")
+            paginationItems[3].removeClass("disabled")
         }
         if (currentPage >= 2) {
             if (currentPage !== 2) {
-                $(".ui.pagination.menu .item:nth-child(2)").addClass("disabled")
+                paginationItems[1].addClass("disabled")
             }
-            $(".ui.pagination.menu .item:nth-child(3)").addClass("disabled active")
-            $(".ui.pagination.menu .item:nth-child(4)").addClass("disabled")
+            paginationItems[2].addClass("disabled active")
+            paginationItems[3].addClass("disabled")
         } else {
-            $(".ui.pagination.menu .item:nth-child(2)").removeClass("disabled")
-            $(".ui.pagination.menu .item:nth-child(3)").removeClass("disabled active")
-            $(".ui.pagination.menu .item:nth-child(4)").removeClass("disabled")
+            paginationItems[1].removeClass("disabled")
+            paginationItems[2].removeClass("disabled active")
+            paginationItems[3].removeClass("disabled")
         }
-        if (currentPage >= data.pagination.count) {
-            $(".ui.pagination.menu .item:nth-child(4)").addClass("disabled display-none")
-            $(".ui.pagination.menu .item:nth-child(5)").addClass("disabled")
+        if (currentPage >= data["pagination"]["last_page"]) {
+            paginationItems[3].addClass("disabled display-none")
+            paginationItems[4].addClass("disabled")
         } else {
-            $(".ui.pagination.menu .item:nth-child(4)").removeClass("disabled")
-            $(".ui.pagination.menu .item:nth-child(5)").removeClass("disabled")
+            paginationItems[3].removeClass("disabled")
+            paginationItems[4].removeClass("disabled")
         }
     }
 
-    function k() {
-        $(".ui.pagination.menu .item:nth-child(1)").click((e) => {
+    function initEvents() {
+        $(".ui.dropdown").dropdown({
+            onChange: () => {
+                getData(currentPage, order)
+            },
+            values: [
+                {
+                    name: 'Newest',
+                    value: 'created_at-desc',
+                    selected: 'created_at-desc' === order
+                },
+                {
+                    name: 'Oldest',
+                    value: 'created_at-asc',
+                    selected: 'created_at-asc' === order
+                }
+            ]
+        })
+        paginationItems[0].click((e) => {
             e.preventDefault();
             getData(currentPage - 1)
         });
-        $(".ui.pagination.menu .item:nth-child(2)").click((e) => {
+        paginationItems[1].click((e) => {
             e.preventDefault();
-            getData(Number.parseInt($(".ui.pagination.menu .item:nth-child(2)").text()))
+            getData(Number.parseInt(paginationItems[1].text()))
         });
-        $(".ui.pagination.menu .item:nth-child(3)").click((e) => {
+        paginationItems[2].click((e) => {
             e.preventDefault();
             getData(currentPage === 1 ? 2 : currentPage)
         });
-        $(".ui.pagination.menu .item:nth-child(4)").click((e) => {
+        paginationItems[3].click((e) => {
             e.preventDefault();
             getData(currentPage + 1)
         });
-        $(".ui.pagination.menu .item:nth-child(5)").click((e) => {
+        paginationItems[4].click((e) => {
             e.preventDefault();
             getData(currentPage + 1)
         });
-
     }
 
     document.addEventListener("turbolinks:load", (event) => {
         event.preventDefault();
         getData(currentPage)
     })
-    document.addEventListener("turbolinks:load", k)
-    $(".ui.dropdown").dropdown()
+    document.addEventListener("turbolinks:load", initEvents)
 </script>

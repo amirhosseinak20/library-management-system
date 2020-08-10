@@ -1,8 +1,4 @@
-json.pagination do
-  json.page @page
-  json.count @count.ceil
-  json.items_count @items_count
-end
+json.pagination @pagination
 json.books do
   json.array! @books do |book|
     json.title book.title
