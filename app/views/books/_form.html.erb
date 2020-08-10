@@ -7,7 +7,7 @@
 <% end %>
 <div class="ui raised very padded text container segment" style="margin-top: 2rem">
   <h1 class="ui header"><%= local_assigns[:name] %></h1>
-  <%= form_with(model: local_assigns[:model], html: {class: "ui form"}) do |f| %>
+  <%= form_with(model: local_assigns[:model], html: {class: "ui form", method: local_assigns[:method]}) do |f| %>
     <% if local_assigns[:model].errors.any? %>
       <div id="error_explanation">
         <div class="ui header"><%= pluralize(book.errors.count, "error") %> prohibited this Book from being saved:</div>
@@ -20,6 +20,28 @@
       </div>
     <% end %>
 
+    <div class="ui segment" style="display: flex; gap: 1rem; align-items: center">
+      <%= f.label :front_cover, 'Front Cover' %>
+      <% if local_assigns[:model].front_cover.attached? %>
+        <%= image_tag local_assigns[:model].front_cover.variant(resize: "100x100!"), class: "ui circular image", style: "margin: 0" %>
+      <% else %>
+        <%= image_tag 'front-cover-placeholder.jpg', class: "ui circular image", style: "margin: 0" %>
+      <% end %>
+      <%= f.file_field :front_cover, accept: 'image/png,image/jpeg,image/svg+xml' %>
+    </div>
+    <div class="ui segment" style="display: flex; gap: 1rem; align-items: center">
+      <%= f.label :back_cover, 'Back Cover' %>
+      <% if local_assigns[:model].back_cover.attached? %>
+        <%= image_tag local_assigns[:model].back_cover.variant(resize: "100x100!"), class: "ui circular image", style: "margin: 0" %>
+      <% else %>
+        <%= image_tag 'front-cover-placeholder.jpg', class: "ui circular image", style: "margin: 0" %>
+      <% end %>
+      <%= f.file_field :back_cover, accept: 'image/png,image/jpeg,image/svg+xml' %>
+    </div>
+    <div class="field">
+      <%= f.label :sample, 'Sample' %>
+      <%= f.file_field :sample, accept: 'application/pdf' %>
+    </div>
     <div class="field">
       <%= f.label :title, 'Title' %>
       <%= f.text_field :title, required: true, placeholder: 'Title' %>

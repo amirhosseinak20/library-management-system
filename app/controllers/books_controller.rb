@@ -7,10 +7,14 @@ class BooksController < ApplicationController
   before_action :can_destroy?, only: [:destroy]
 
   def index
-    per_page = 12
+    @items_count = per_page = 12
     @count = Book.all.count / per_page.to_f
     @page = (params[:page] || 1).to_i
     @books = Book.order(params[:order_by] || 'created_at desc').limit(per_page).offset((@page - 1) * per_page)
+    respond_to do |format|
+      format.json
+      format.html
+    end
   end
 
   def show
@@ -104,7 +108,7 @@ class BooksController < ApplicationController
   helper_method :can_update?
 
   def book_params
-    p = params.require(:book).permit(:title, :isbn, :publication_date, :pages, :publisher_id, :genre, :language)
+    p = params.require(:book).permit(:title, :isbn, :publication_date, :pages, :publisher_id, :genre, :language, :front_cover, :back_cover, :sample)
     p[:genre] = p[:genre].split(",") if p[:genre].instance_of? String
     p
   end

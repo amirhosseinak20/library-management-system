@@ -79,4 +79,5 @@ gem 'rails_admin'
 gem 'sidekiq'
 # avatars
 gem 'gravatar_image_tag'
-gem "mini_magick"
+gem 'image_processing'
+gem 'activestorage-validator'

@@ -20,7 +20,7 @@ require("channels")
 // Loads all Semantic javascripts
 global.toastr = require('toastr');
 require("toastr/build/toastr.min.css");
-
+require("lodash");
 const semanticUI = require('fomantic-ui-css/semantic');
 document.addEventListener('turbolinks:load', () => {
 

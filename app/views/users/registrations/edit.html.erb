@@ -81,7 +81,7 @@
           <% else %>
             <%= image_tag gravatar_image_url(resource.email, filetype: :png, rating: 'pg', size: 100, secure: false), class: "ui circular image", style: "margin: 0" %>
           <% end %>
-          <%= f.file_field :avatar %>
+          <%= f.file_field :avatar, accept: 'image/png,image/jpeg,image/svg+xml' %>
         </div>
         <div class="field">
           <%= f.label :first_name, 'First Name' %>

@@ -20,6 +20,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z]+\z/, message: 'Please provide valid name' }
   validates_date :birth_date, before: -> { Date.today }, before_message: 'must be before today'
   validates :phone, format: { with: /\A\+\d{12}\z/ }, length: { is: 13 }
+  validates :avatar, blob: { content_type: :image }
 
   def initialize(args)
     #
@@ -57,7 +58,7 @@ class User < ApplicationRecord
     if is_an_author?
       !books.where({ books: { id: book_id } }).empty?
     else
-      true
+      false
     end
   end
 
