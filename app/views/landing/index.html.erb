@@ -1,39 +1,39 @@
-<!--<div class="ui padded grid">-->
-<!--  <div class="ui row">-->
-<!--    <div class="ui column">-->
-<!--      <h2 class="ui header">-->
-        <%#= image_tag "books.png" %>
-<!--        <div class="content">-->
-<!--          Latest <%#= link_to "Books", books_path %>-->
-<!--        </div>-->
-<!--      </h2>-->
-<!--      <div class="ui four column padded grid">-->
-        <%# @books.each do |book| %>
-<!--          <div class="column">-->
-            <%#= render 'books/card', title: book.title, id: book.id, authors: book.authors %>
-<!--          </div>-->
-        <%# end %>
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--  <div class="ui row">-->
-<!--    <div class="ui grid container">-->
-<!--      <div class="ui eight wide column">-->
-<!--        <h2 class="ui header">-->
-          <%#= image_tag "author.png" %>
-<!--          <div class="content">-->
-<!--            Latest <%#= link_to "Authors", users_path %>-->
-<!--          </div>-->
-<!--        </h2>-->
-<!--        <div class="ui horizontal cards">-->
-          <%# @authors.each do |author| %>
-            <%#= render 'users/card', first_name: author.first_name, last_name: author.last_name, id: author.id, books: author.books, avatar: author.avatar, email: author.email %>
-        <%# end %>
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="ui eight wide column">-->
+<div class="ui padded grid">
+  <div class="ui row">
+    <div class="ui column">
+      <h2 class="ui header">
+        <%= image_tag "books.png" %>
+        <div class="content">
+          Latest <%= link_to "Books", books_path %>
+        </div>
+      </h2>
+      <div class="ui four column padded grid">
+        <% @books.each do |book| %>
+          <div class="column">
+            <%= render 'books/card', title: book.title, id: book.id, authors: book.authors %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="ui row">
+    <div class="ui grid container">
+      <div class="ui eight wide column">
+        <h2 class="ui header">
+          <%= image_tag "author.png" %>
+          <div class="content">
+            Latest <%= link_to "Authors", users_path %>
+          </div>
+        </h2>
+        <div class="ui horizontal cards">
+          <% @authors.each do |author| %>
+            <%= render 'users/card', first_name: author.first_name, last_name: author.last_name, id: author.id, books: author.books, avatar: author.avatar, email: author.email %>
+          <% end %>
+        </div>
+      </div>
+      <div class="ui eight wide column">
 
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+      </div>
+    </div>
+  </div>
+</div>
