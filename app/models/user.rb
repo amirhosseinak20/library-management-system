@@ -57,9 +57,15 @@ class User < ApplicationRecord
   def author?(book_id)
     if is_an_author?
       !books.where({ books: { id: book_id } }).empty?
+    elsif can_edit_book?
+      true
     else
       false
     end
+  end
+
+  def name
+    "#{first_name} #{last_name}"
   end
 
   private

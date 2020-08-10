@@ -1,16 +1,11 @@
 class BooksController < ApplicationController
-  skip_before_action :authenticate_user!
-  before_action :init_user
-  before_action :init_book, only: [:show, :edit, :update, :new]
   before_action :can_update?, only: [:update]
-  before_action :can_create?, only: [:create]
-  before_action :can_destroy?, only: [:destroy]
 
   def index
-    @items_count = per_page = 12
-    @count = Book.all.count / per_page.to_f
+    @items_count = 12
+    @count = Book.all.count / @items_count.to_f
     @page = (params[:page] || 1).to_i
-    @books = Book.order(params[:order_by] || 'created_at desc').limit(per_page).offset((@page - 1) * per_page)
+    @books = Book.order(params[:order_by] || 'created_at desc').limit(@items_count).offset((@page - 1) * @items_count)
     respond_to do |format|
       format.json
       format.html
@@ -49,7 +44,7 @@ class BooksController < ApplicationController
     @genres = Book.select(:genre).map(&:genre).flatten.uniq
     @publishers = Publisher.select(:name, :id)
     if @current_user.is_an_author?
-      @authors = [{ name: "#{@user.first_name} #{@user.last_name}", id: @user.id }]
+      @authors = [{ name: "#{@current_user.first_name} #{@current_user.last_name}", id: @current_user.id }]
     else
       @authors = User.select(:first_name, :last_name, :id).where(role: 'author').map { |a| { name: "#{a.first_name} #{a.last_name}", id: a.id } }
     end
@@ -83,24 +78,6 @@ class BooksController < ApplicationController
   end
 
   protected
-
-  def init_user
-    @current_user = current_user || User.new
-  end
-
-  def init_book
-    puts(params[:id])
-    @book = params[:id].nil? ? Book.new : Book.find(params[:id])
-    puts(@book.title)
-  end
-
-  def can_create?
-    @current_user.can_create_book?
-  end
-
-  def can_destroy?
-    @current_user.can_destroy_book?
-  end
 
   def can_update?
     @current_user.author?(params[:id])

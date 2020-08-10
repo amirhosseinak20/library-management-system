@@ -10,23 +10,27 @@
   <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
 </head>
 
-<body style="padding-top: 42px">
+<body style="padding-top: 60px">
 
-<div class="ui sticky" style="">
-  <div class="ui fluid fixed menu">
-    <%= link_to root_path, class: "item", target: "_top" do %>
-      <%= image_tag "books.png" %>
-    <% end %>
-    <!--        <a class="item">Submit</a>-->
-    <div class="right menu">
-      <% unless @current_user.signed_in? %>
-        <%= link_to 'Sign Up', new_user_registration_path, class: 'item' %>
-        <%= link_to 'Sign In', new_user_session_path, class: 'item' %>
-      <% else %>
-        <%= link_to 'Edit profile', edit_user_registration_path, class: 'item' %>
-        <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'item' %>
-      <% end %>
+<div class="ui fluid secondary pointing fixed menu" style="background: white !important;">
+  <%= link_to root_path, class: "item", target: "_top" do %>
+    <%= image_tag "books.png" %>
+  <% end %>
+  <% if @current_user.signed_in? %>
+    <div class="ui item header">
+      Hey&nbsp;
+      <%= link_to @current_user.name, user_path(@current_user.id) %>
+      !
     </div>
+  <% end %>
+  <div class="right menu">
+    <% unless @current_user.signed_in? %>
+      <%= link_to 'Sign Up', new_user_registration_path, class: 'ui item' %>
+      <%= link_to 'Sign In', new_user_session_path, class: 'ui item' %>
+    <% else %>
+      <%= link_to 'Edit profile', edit_user_registration_path, class: 'ui item' %>
+      <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'ui item' %>
+    <% end %>
   </div>
 </div>
 

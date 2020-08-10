@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:notify]
+  skip_before_action :authenticate_user!, only: [:create]
 
   def index
     @users = User.all
@@ -24,12 +24,12 @@ class UsersController < ApplicationController
       # UserMailer.send_signup_email(@user).deliver
       redirect_to(@user, notice: 'User created')
     else
-      render action: 'new'
+      render action: 'index'
     end
   end
 
   private
   def users_params
-    params.require(:user).permit(:first_name, :last_name, :nickname, :phone, :birth_date, :password, :email)
+    params.require(:user).permit(:first_name, :last_name, :nickname, :phone, :birth_date, :password, :email, :role_id)
   end
 end

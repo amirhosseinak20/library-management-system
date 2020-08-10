@@ -1,0 +1,47 @@
+<div class="ui sticky">
+  <div class="ui raised top attached segment">
+    <div class="ui secondary menu">
+      <%= link_to root_path, class: "item", target: "_top" do %>
+        <%= image_tag "books.png" %>
+      <% end %>
+
+      <div class="right menu">
+        <% if auth %>
+          <div class="item">
+            <div class="ui inline dropdown">
+              <div class="text">
+                <%= image_tag user_avatar_url, class: "ui avatar image", alt: "#{user_full_name} avatar" %>
+                <%= user_full_name %>
+              </div>
+              <i class="dropdown icon"></i>
+              <div class="menu">
+                <div class="item">
+                  <i class="edit icon"></i>
+                  <%= link_to 'Edit profile', edit_user_registration_path %>
+                </div>
+                <div class="item">
+                  <i class="sign out alternate icon"></i>
+                  <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="item">
+            <div class="ui buttons">
+              <%= link_to 'Login', new_user_session_path, class: 'ui secondary button' %>
+              <div class="or"></div>
+              <%= link_to 'Sign up', new_user_registration_path, class: 'ui primary button' %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    $(".ui.sticky").sticky({
+        context: document.body
+    });
+    $(".ui.dropdown").dropdown()
+</script>

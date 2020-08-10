@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'landing/index'
   resources :books do
     resources :borrows, only: [:new, :create, :index, :show, :update]
+    get 'reza'
   end
   resources :users do
     resources :borrows, only: [:index, :destroy, :show, :update]

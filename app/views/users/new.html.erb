@@ -21,7 +21,7 @@
         Register an account
       </div>
     </h2>
-    <%= form_with model: @user, url: users_path, html: { class: 'ui large form' }, local: true do |f| %>
+    <%= form_with model: @user, url: users_path, html: { class: 'ui large form' } do |f| %>
       <div class="ui stacked left aligned segment">
         <div class="field">
           <%= f.label :first_name, 'First Name' %>

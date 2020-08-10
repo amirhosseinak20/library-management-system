@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= page_title %></title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+  <%= yield :styles %>
+  <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+</head>
+
+<body>
+
+<%= render 'layouts/header', {auth: false, user_full_name: user_full_name} %>
+
+<div class="root">
+  <%= yield %>
+</div>
+
+<% unless flash.empty? %>
+  <script type="text/javascript">
+      <% flash.each do |f| %>
+      <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+      $('body')
+          .toast({
+              class: '<%= type %>',
+              message: `<%= f[1] %>`,
+              showProgress: 'bottom',
+              position: 'top left',
+              displayTime: 5000,
+              className: {
+                  toast: 'ui message'
+              },
+              title: '<%= type %>',
+              progressUp: true
+          })
+      <% end %>
+  </script>
+<% end %>
+</body>
+</html>

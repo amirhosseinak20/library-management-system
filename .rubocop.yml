@@ -16,3 +16,5 @@ Style/StringLiterals:
   Enabled: false
 Style/WordArray:
   Enabled: false
+Metrics/AbcSize:
+  Enabled: false
