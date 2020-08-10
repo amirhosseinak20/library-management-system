@@ -99,7 +99,13 @@ users[4].role = roles[1]
 users[5].role = roles[1]
 users[6].role = roles[1]
 users[7].role = roles[1]
-users.each(&:save)
+users.each do |user|
+  user.avatar.attach(
+      io: File.open('storage/ie/9d/ie9dopur53vyhpoh1x0s0r8trg55'),
+      filename: 'file.png'
+  )
+  user.save
+end
 
 publishers = Publisher.create([
                                 {

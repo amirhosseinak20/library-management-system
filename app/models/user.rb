@@ -11,6 +11,7 @@ class User < ApplicationRecord
   belongs_to :role
   delegate :permissions, to: :role, allow_nil: true
   has_and_belongs_to_many :books
+  has_one_attached :avatar
 
   # validations
   validates :first_name, :last_name, :nickname, length: { maximum: 50 }

@@ -77,3 +77,6 @@ gem 'mysql2'
 gem 'rails_admin'
 # job queue
 gem 'sidekiq'
+# avatars
+gem 'gravatar_image_tag'
+gem "mini_magick"

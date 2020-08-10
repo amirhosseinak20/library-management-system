@@ -60,6 +60,7 @@
     <orderEntry type="library" scope="PROVIDED" name="ffi (v1.13.1, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="fomantic-ui-sass (v2.8.6, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="globalid (v0.4.2, RVM: ruby-2.5.7) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="gravatar_image_tag (v1.2.0, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="haml (v5.1.2, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="i18n (v1.8.5, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="jbuilder (v2.10.0, RVM: ruby-2.5.7) [gem]" level="application" />
@@ -75,6 +76,7 @@
     <orderEntry type="library" scope="PROVIDED" name="marcel (v0.3.3, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="method_source (v1.0.0, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mimemagic (v0.3.5, RVM: ruby-2.5.7) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="mini_magick (v4.10.1, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mini_mime (v1.0.2, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mini_portile2 (v2.4.0, RVM: ruby-2.5.7) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="minitest (v5.14.1, RVM: ruby-2.5.7) [gem]" level="application" />
