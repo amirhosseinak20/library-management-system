@@ -2,15 +2,18 @@
   <div class="ui row">
     <div class="ui column">
       <h2 class="ui header">
-        <%= image_tag "books.png" %>
+        <%= image_tag "books.png", class: "ui small image" %>
         <div class="content">
           Latest <%= link_to "Books", books_path %>
+        </div>
+        <div class="ui right floated basic segment" style="margin: 0em !important; padding: 0em !important;">
+          <%= link_to "More", books_path, class: "ui green button" %>
         </div>
       </h2>
       <div class="ui four column padded grid">
         <% @books.each do |book| %>
           <div class="column">
-            <%= render 'books/card', title: book.title, id: book.id, authors: book.authors %>
+            <%= render 'books/card', {book: book} %>
           </div>
         <% end %>
       </div>

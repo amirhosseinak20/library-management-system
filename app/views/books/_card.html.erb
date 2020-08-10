@@ -3,15 +3,24 @@
     <%= image_tag "front-cover-placeholder.jpg" %>
   </div>
   <div class="content">
-    <%= link_to "#{local_assigns[:title]}", book_path(local_assigns[:id]), class: "header" %>
+    <%= link_to "#{book.title}", book_path(book.id), class: "header" %>
     <div class="meta">
-      <%= local_assigns[:authors].length == 1 ? "Author" : "Author".pluralize %>:
-      <% local_assigns[:authors].each_with_index do |author, index| %>
-        <%= link_to "#{author.first_name} #{author.last_name}#{"," unless index == local_assigns[:authors].length - 1}", user_path(author.id) %>
+      <%= book.authors.length == 1 ? "Author" : "Author".pluralize %>:
+      <% book.authors.each_with_index do |author, index| %>
+        <%= link_to "#{author.first_name} #{author.last_name}#{"," unless index == book.authors.length - 1}", user_path(author.id) %>
       <% end %>
     </div>
-    <!--          <div class="description">-->
-    <!--            Matthew is an interior designer living in New York.-->
-    <!--          </div>-->
+    <div class="description">
+      <%= book.summary %>
+    </div>
+    <div class="extra content">
+      <% if current_user %>
+        <%= form_with(url: book_borrows_path(book_id: book.id), method: "post", local: true) do |form| %>
+          <%= form.submit "Borrow", class: "ui fluid violet button" %>
+        <% end %>
+      <% else %>
+        <small>Please login/sign up to borrow</small>
+      <% end %>
+    </div>
   </div>
 </div>
