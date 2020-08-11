@@ -28,4 +28,8 @@ module ApplicationHelper
       false
     end
   end
+
+  def authenticated?
+    !!current_user
+  end
 end
