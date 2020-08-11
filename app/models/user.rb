@@ -1,3 +1,4 @@
+MAX_BORROW_ITEM = 4
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -66,6 +67,10 @@ class User < ApplicationRecord
 
   def name
     "#{first_name} #{last_name}"
+  end
+
+  def can_borrow_books?
+    borrows.where(return_date: nil).count <= MAX_BORROW_ITEM && permissions.find_by_name('borrow_books')
   end
 
   private

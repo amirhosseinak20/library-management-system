@@ -13,18 +13,18 @@
             <%= form.hidden_field :return_date, value: Date.today %>
             <%= form.button "Return", class: "ui fluid blue button" %>
           <% end %>
-        <% else %>
+        <% elsif current_user.can_borrow_book?(@book.id) || current_user.can_borrow_books? %>
           <%= form_with(url: book_borrows_path(book_id: @book.id), method: "post", local: true) do |form| %>
             <%= form.submit "Borrow", class: "ui fluid violet button" %>
           <% end %>
         <% end %>
-        <% if current_user.can_update_book?(@book) %>
+        <% if current_user.can_update_book?(@book) || current_user.can_update_books? %>
           <div class="item">
             <%= link_to "Edit", edit_book_path(id: @book.id), class: "ui fluid green button" %>
           </div>
         <% end %>
-        <% if current_user.can_destroy_book?(@book.id) %>
-          <div class="item">-->
+        <% if current_user.can_destroy_book?(@book.id)|| current_user.can_destroy_books? %>
+          <div class="item">
             <%= link_to "Destroy", book_path(id: @book.id), method: :delete, class: "ui fluid red button" %>
           </div>
         <% end %>

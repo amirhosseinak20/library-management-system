@@ -18,7 +18,7 @@
   <%= yield %>
 </div>
 
-<% if current_user.can_create_book? %>
+<% if current_user.can_create_books? %>
   <div class="item" style="position: fixed; bottom: 1rem; right: 1rem;">
     <%= link_to new_book_path, class: "ui circular twitter icon massive button" do %>
       <i class="book icon"></i>

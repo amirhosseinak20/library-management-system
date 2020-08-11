@@ -22,7 +22,7 @@ class BooksController < ApplicationController
 
   def show
     @book = Book.find(params[:id])
-    @borrow = @book.borrows.where(users: { id: current_user.id }, return_date: nil)[0] if authenticated?
+    @borrow = @book.borrows.where(user_id: current_user.id, return_date: nil)[0] if authenticated?
   end
 
   def create
