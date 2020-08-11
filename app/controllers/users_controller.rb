@@ -1,4 +1,8 @@
 class UsersController < ApplicationController
+  include ApplicationHelper
+
+  before_action :can_show_profile?
+
   def index
     @users = User.all
   end
@@ -29,5 +33,11 @@ class UsersController < ApplicationController
   private
   def users_params
     params.require(:user).permit(:first_name, :last_name, :nickname, :phone, :birth_date, :password, :email, :role_id)
+  end
+
+  def can_show_profile?
+    unless params[:id] && numeric?(params[:id]) && (User.joins(:role).where(id: params[:id], roles: { name: 'author' })[0] || current_user.id == params[:id].to_i)
+      redirect_to request.referer || request.base_url, notice: 'This user doesn\'t have public profile!'
+    end
   end
 end
