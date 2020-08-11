@@ -8,7 +8,6 @@ class User < ApplicationRecord
 
   # associations
   has_many :borrows
-  has_many :books, through: :borrows
   belongs_to :role
   delegate :permissions, to: :role, allow_nil: true
   has_and_belongs_to_many :books
@@ -71,6 +70,10 @@ class User < ApplicationRecord
 
   def can_borrow_books?
     borrows.where(return_date: nil).count <= MAX_BORROW_ITEM && permissions.find_by_name('borrow_books')
+  end
+
+  def can_update_book?(book_id)
+    permissions.find_by_name('borrow_books') && books.where(id: book_id)[0]
   end
 
   private
