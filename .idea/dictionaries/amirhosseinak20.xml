@@ -4,11 +4,14 @@
       <w>akbari</w>
       <w>amirhossein</w>
       <w>amirhosseinak</w>
+      <w>authenticatable</w>
       <w>bcrypt</w>
       <w>bildungsroman</w>
       <w>bootsnap</w>
+      <w>bulleted</w>
       <w>byebug</w>
       <w>capybara</w>
+      <w>confirmable</w>
       <w>cummins</w>
       <w>davidblack</w>
       <w>fcontext</w>
@@ -19,9 +22,14 @@
       <w>jbuilder</w>
       <w>mifflin</w>
       <w>minitest</w>
+      <w>omniauthable</w>
+      <w>registerable</w>
+      <w>rememberable</w>
       <w>shoulda</w>
       <w>sidekiq</w>
       <w>superadmin</w>
+      <w>timeoutable</w>
+      <w>trackable</w>
       <w>turbolinks</w>
       <w>webdrivers</w>
       <w>webpacker</w>

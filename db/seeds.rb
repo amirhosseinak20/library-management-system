@@ -9,24 +9,24 @@
 roles = Role.create([{ name: 'student' }, { name: 'author' }, { name: 'admin' }])
 permissions = Permission.create([
                                   {
-                                    name: 'create_book',
+                                    name: 'create_books',
                                     description: 'This privilege grants user to create books'
                                   }, {
-                                    name: 'edit_book',
+                                    name: 'update_books',
                                     description: 'This privilege grants user to edit books'
                                   }, {
-                                    name: 'delete_book',
+                                    name: 'destroy_books',
                                     description: 'This privilege grants user to delete books'
                                   }, {
-                                      name: 'borrow_book',
-                                      description: 'This privilege grants user to borrow books'
+                                    name: 'borrow_books',
+                                    description: 'This privilege grants user to borrow books'
                                   }, {
-                                      name: 'create_author',
-                                      description: 'This privilege grants user to create authors'
+                                    name: 'create_authors',
+                                    description: 'This privilege grants user to create authors'
                                   }
                                 ])
 roles[0].permissions = [permissions[3], permissions[4]]
-roles[1].permissions = [permissions[3], permissions[1], permissions[0], permissions[4]]
+roles[1].permissions = [permissions[3], permissions[0], permissions[4]]
 roles[2].permissions = [permissions[3], permissions[2], permissions[1], permissions[0], permissions[4]]
 roles.each(&:save)
 
@@ -101,8 +101,8 @@ users[6].role = roles[1]
 users[7].role = roles[1]
 users.each do |user|
   user.avatar.attach(
-      io: File.open('storage/ie/9d/ie9dopur53vyhpoh1x0s0r8trg55'),
-      filename: 'file.png'
+    io: File.open('storage/ie/9d/ie9dopur53vyhpoh1x0s0r8trg55'),
+    filename: 'file.png'
   )
   user.save
 end

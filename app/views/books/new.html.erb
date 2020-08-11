@@ -1,1 +1,10 @@
-<%= render 'form', method: "post", name: 'Create Book', model: @book, languages: @languages, genres: @genres, publishers: @publishers, user: @current_user, authors: @authors %>
+<%= render(
+        'form', {
+        name: 'Create Book',
+        model: @book,
+        languages: @languages,
+        genres: @genres,
+        publishers: @publishers,
+        authors: @authors
+    })
+%>

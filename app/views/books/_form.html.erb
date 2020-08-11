@@ -1,19 +1,12 @@
-<%= content_for :styles do %>
-  <style>
-    body {
-      background-color: #DADADA;
-    }
-  </style>
-<% end %>
 <div class="ui raised very padded text container segment" style="margin-top: 2rem">
-  <h1 class="ui header"><%= local_assigns[:name] %></h1>
-  <%= form_with(model: local_assigns[:model], html: {class: "ui form", method: local_assigns[:method]}) do |f| %>
-    <% if local_assigns[:model].errors.any? %>
+  <h1 class="ui header"><%= name %></h1>
+  <%= form_with(model: model, html: {class: "ui form"}) do |f| %>
+    <% if model.errors.any? %>
       <div id="error_explanation">
-        <div class="ui header"><%= pluralize(book.errors.count, "error") %> prohibited this Book from being saved:</div>
+        <div class="ui header"><%= pluralize(model.errors.count, "error") %> prohibited this Book from being saved:</div>
 
         <div class="ui bulleted list">
-          <% local_assigns[:model].errors.full_messages.each do |message| %>
+          <% model.errors.full_messages.each do |message| %>
             <div class="item ui warning message"><%= message %></div>
           <% end %>
         </div>
@@ -22,20 +15,12 @@
 
     <div class="ui segment" style="display: flex; gap: 1rem; align-items: center">
       <%= f.label :front_cover, 'Front Cover' %>
-      <% if local_assigns[:model].front_cover.attached? %>
-        <%= image_tag local_assigns[:model].front_cover.variant(resize: "100x100!"), class: "ui circular image", style: "margin: 0" %>
-      <% else %>
-        <%= image_tag 'front-cover-placeholder.jpg', class: "ui circular image", style: "margin: 0" %>
-      <% end %>
+      <%= image_tag resource_image_url(model, :front_cover), class: "ui circular image", style: "margin: 0" %>
       <%= f.file_field :front_cover, accept: 'image/png,image/jpeg,image/svg+xml' %>
     </div>
     <div class="ui segment" style="display: flex; gap: 1rem; align-items: center">
       <%= f.label :back_cover, 'Back Cover' %>
-      <% if local_assigns[:model].back_cover.attached? %>
-        <%= image_tag local_assigns[:model].back_cover.variant(resize: "100x100!"), class: "ui circular image", style: "margin: 0" %>
-      <% else %>
-        <%= image_tag 'front-cover-placeholder.jpg', class: "ui circular image", style: "margin: 0" %>
-      <% end %>
+      <%= image_tag resource_image_url(model, :back_cover), class: "ui circular image", style: "margin: 0" %>
       <%= f.file_field :back_cover, accept: 'image/png,image/jpeg,image/svg+xml' %>
     </div>
     <div class="field">
@@ -64,16 +49,13 @@
       <%= f.number_field :pages, required: true, placeholder: 'Pages' %>
     </div>
     <div class="field">
-      <%#= f.label :publisher_id, 'Publisher' %>
-      <%#= f.collection_select :publisher_id, local_assigns[:publishers], :id, :name, required: true, placeholder: 'Publisher', class: 'ui selection dropdown' %>
-
       <%= f.label :publisher_id, 'Publisher' %>
       <div class="ui fluid search selection dropdown deny-addition">
         <%= f.hidden_field :publisher_id, required: true, placeholder: 'Publisher' %>
         <i class="dropdown icon"></i>
         <div class="default text">Publisher</div>
         <div class="menu">
-          <% local_assigns[:publishers].each do |p| %>
+          <% publishers.each do |p| %>
             <div class="item" data-value="<%= p.id %>"><%= p.name %></div>
           <% end %>
         </div>
@@ -82,11 +64,11 @@
     <div class="field">
       <%= f.label :genre, 'Genres' %>
       <div class="ui fluid multiple search selection dropdown allow-addition">
-        <%= f.hidden_field :genre, required: true, placeholder: 'Genres', value: local_assigns[:model][:genre].join(",") if !local_assigns[:model][:genre].nil? %>
+        <%= f.hidden_field :genre, required: true, placeholder: 'Genres' %>
         <i class="dropdown icon"></i>
         <div class="default text">Genres</div>
         <div class="menu">
-          <% local_assigns[:genres].each do |g| %>
+          <% genres.each do |g| %>
             <div class="item" data-value="<%= g %>"><%= g %></div>
           <% end %>
         </div>
@@ -99,7 +81,7 @@
         <i class="dropdown icon"></i>
         <div class="default text">Language</div>
         <div class="menu">
-          <% local_assigns[:languages].each do |l| %>
+          <% languages.each do |l| %>
             <div class="item" data-value="<%= l %>"><%= l %></div>
           <% end %>
         </div>
@@ -107,23 +89,23 @@
     </div>
     <div class="field">
       <%= f.label :author_id, 'Author' %>
-      <div class="ui fluid search selection dropdown deny-addition">
-        <%= f.hidden_field :author_id, required: true, placeholder: 'Author' %>
+      <div class="ui fluid search multiple selection dropdown deny-addition">
+        <%= f.hidden_field :authors_ids, placeholder: 'Author' %>
         <i class="dropdown icon"></i>
         <div class="default text">Author</div>
         <div class="menu">
-          <% local_assigns[:authors].each do |a| %>
+          <% authors.each do |a| %>
             <div class="item" data-value="<%= a[:id] %>"><%= a[:name] %></div>
           <% end %>
         </div>
       </div>
     </div>
 
-    <%= f.submit local_assigns[:name], class: 'ui fluid large teal submit button' %>
+    <%= f.submit name, class: 'ui fluid large teal submit button' %>
 
-    <% if local_assigns[:user].can_create_author? %>
+    <% if current_user.can_create_authors? %>
       <div class="ui message">
-        Don't find author <%= link_to 'click here', users_authors_new_path, class: 'item' %> to create it
+        Don't find author click <%= link_to 'here', users_authors_new_path, class: 'ui blue text' %> to create it
       </div>
     <% end %>
   <% end %>

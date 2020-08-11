@@ -13,11 +13,7 @@ module ApplicationHelper
 
   def avatar_url(user_id)
     user = User.where(id: user_id)[0]
-    if user&.avatar.attached?
-      url_for(user.avatar)
-    else
-      gravatar_image_url(user&.email)
-    end
+    resource_image_url(user, :avatar)
   end
 
   def numeric?(str)
@@ -32,5 +28,13 @@ module ApplicationHelper
 
   def authenticated?
     !!current_user
+  end
+
+  def resource_image_url(resource, field)
+    if resource[field]&.attached?
+      url_for(resource[field])
+    else
+      image_url("404.jpg")
+    end
   end
 end

@@ -1,7 +1,14 @@
-ITEMS_PER_PAGE = 12
-
 class BooksController < ApplicationController
+  # constants
+  ITEMS_PER_PAGE = 12
+
+  # helpers
   include ApplicationHelper
+
+  # before actions
+  before_action :can_create_books?, only: [:new, :create]
+  before_action :can_update_book?, only: [:edit, :update]
+  before_action :crud_params, only: [:new, :create, :edit, :update]
 
   def index
     @pagination = {
@@ -25,40 +32,25 @@ class BooksController < ApplicationController
     @borrow = @book.borrows.where(user_id: current_user.id, return_date: nil)[0] if authenticated?
   end
 
+  def new
+    @book = Book.new
+  end
+
+  def edit; end
+
   def create
     @book = Book.new(book_params)
+    authors = params[:book][:authors_ids].map { |id| User.find(id) }
     if @book.save
-      redirect_to(@book, notice: 'User created')
+      @book.authors << authors
+      @book.save
+      redirect_to(@book, notice: 'Book created')
     else
-      render action: 'new', notice: 'There was a problem when editing book'
-    end
-  end
-
-  def new
-    @languages = Book.select(:language).map(&:language).uniq
-    @genres = Book.select(:genre).map(&:genre).flatten.uniq
-    @publishers = Publisher.select(:name, :id)
-    if @current_user.is_an_author?
-      @authors = [{name: "#{@current_user.first_name} #{@current_user.last_name}", id: @current_user.id}]
-    else
-      @authors = User.joins(:role).where(roles: {name: 'author'}).map { |a| {name: "#{a.first_name} #{a.last_name}", id: a.id} }
-    end
-    puts @authors
-  end
-
-  def edit
-    @languages = Book.select(:language).map(&:language).uniq
-    @genres = Book.select(:genre).map(&:genre).flatten.uniq
-    @publishers = Publisher.select(:name, :id)
-    if @current_user.is_an_author?
-      @authors = [{name: "#{@current_user.first_name} #{@current_user.last_name}", id: @current_user.id}]
-    else
-      @authors = User.select(:first_name, :last_name, :id).where(role: 'author').map { |a| {name: "#{a.first_name} #{a.last_name}", id: a.id} }
+      render :new, notice: 'There was a problem when editing book', error: @book.errors
     end
   end
 
   def update
-    puts book_params
     respond_to do |format|
       if @book.update(book_params)
         format.html { redirect_to @book, notice: 'Book was successfully updated.' }
@@ -77,8 +69,8 @@ class BooksController < ApplicationController
       items: @q_books.map do |item|
         {
           title: item.title,
-            url: book_path(item.id),
-            authors: item.authors.map { |elem| "#{elem.first_name} #{elem.last_name}" }.join(", ")
+          url: book_path(item.id),
+          authors: item.authors.map { |elem| "#{elem.first_name} #{elem.last_name}" }.join(", ")
         }
       end
     }
@@ -86,15 +78,41 @@ class BooksController < ApplicationController
 
   protected
 
-  def can_update?
-    @current_user.author?(params[:id])
+  def book_params
+    params[:book][:genre] = params[:book][:genre].split(",") if params[:book][:genre].instance_of? String
+    if params[:book][:authors_ids].instance_of? String
+      params[:book][:authors_ids] = params[:book][:authors_ids].split(",")
+    end
+    params.require(:book).permit(
+      :front_cover,
+      :back_cover,
+      :sample,
+      :title,
+      :isbn,
+      :publication_date,
+      :pages,
+      :publisher_id,
+      :language,
+      genre: []
+    )
   end
 
-  helper_method :can_update?
+  def crud_params
+    @languages = Book.select(:language).map(&:language).uniq
+    @genres = Book.select(:genre).map(&:genre).flatten.uniq
+    @publishers = Publisher.select(:name, :id)
+    @authors = User.joins(:role).where(roles: { name: 'author' }).map do |a|
+      { name: "#{a.first_name} #{a.last_name}", id: a.id }
+    end
+    @authors.select! { |author| author[:id] == current_user.id } if current_user.is_an_author?
+  end
 
-  def book_params
-    p = params.require(:book).permit(:title, :isbn, :publication_date, :pages, :publisher_id, :genre, :language, :front_cover, :back_cover, :sample)
-    p[:genre] = p[:genre].split(",") if p[:genre].instance_of? String
-    p
+  def can_create_books?
+    redirect_to request.referer || request.base_url unless current_user&.can_create_books?
+  end
+
+  def can_update_book?
+    redirect_url = request.referer || request.base_url
+    redirect_to redirect_url unless numeric?(params[:id]) && current_user&.can_update_book?(params[:id])
   end
 end

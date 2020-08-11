@@ -1,5 +1,7 @@
-MAX_BORROW_ITEM = 4
 class User < ApplicationRecord
+  # constants
+  MAX_BORROW_ITEM = 4
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -8,9 +10,10 @@ class User < ApplicationRecord
 
   # associations
   has_many :borrows
+  has_many :borrowed_books, through: :borrows, class_name: "Book", source: "book"
+  has_and_belongs_to_many :books, join_table: "authors_books", class_name: "Book"
   belongs_to :role
   delegate :permissions, to: :role, allow_nil: true
-  has_and_belongs_to_many :books
   has_one_attached :avatar
 
   # validations
@@ -26,10 +29,7 @@ class User < ApplicationRecord
     #
     # do whatever, args are passed to super
     #
-    if args && args['role_id'].nil?
-      args['role_id'] = Role.where(name: 'student').first.id
-      puts args
-    end
+    args[:role_id] = Role.where(name: 'student').first.id if args && args['role_id'].nil?
     super
   end
 
