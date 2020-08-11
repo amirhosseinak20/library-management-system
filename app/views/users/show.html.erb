@@ -1,5 +1,35 @@
-<div class="ui list">
-    <div class="item">
-      <div class="header"><%= "#{@user.first_name} #{"\"#{@user.nickname}\"" if @user.nickname} #{@user.last_name}" %></div>
+<div class="ui grid container">
+  <div class="ui three wide column">
+    <%= image_tag avatar_url(@user.id), style: "width: 100%" %>
+    <div class="ui list">
+      <% if authenticated? %>
+        <% if current_user.can_update_user?(@user.id) %>
+          <div class="item">
+            <%= link_to "Edit", edit_user_path(id: @user.id), class: "ui fluid green button" %>
+          </div>
+        <% end %>
+        <% if current_user.can_destroy_users? %>
+          <div class="item">
+            <%= link_to "Destroy", user_path(id: @book.id), method: :delete, class: "ui fluid red button" %>
+          </div>
+        <% end %>
+      <% end %>
     </div>
+  </div>
+  <div class="ui thirteen wide column">
+    <h1 class="ui header">Name: <%= "#{@user.first_name} #{@user.last_name}" %></h1>
+    <% if @user.nickname %>
+      <div class="ui header">Nickname: <%= @user.nickname %></div>
+    <% end %>
+    <div class="ui header">Birth Date: <%= @user.birth_date %></div>
+  </div>
+  <h2 class="ui header"><%= image_tag "books.png", class: "ui small image" %>Books</h2>
+  <div class="row">
+    <div class="ui link cards">
+      <% @user.books.each do |book| %>
+        <%= render 'books/card', {book: book} %>
+      <% end %>
+    </div>
+  </div>
 </div>
+

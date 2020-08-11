@@ -11,11 +11,12 @@ module ApplicationHelper
     current_user ? "#{current_user.first_name} #{current_user.last_name}" : "John Doe"
   end
 
-  def user_avatar_url
-    if current_user&.avatar&.attached?
-      url_for(current_user.avatar)
+  def avatar_url(user_id)
+    user = User.where(id: user_id)[0]
+    if user&.avatar.attached?
+      url_for(user.avatar)
     else
-      gravatar_image_url(current_user&.email)
+      gravatar_image_url(user&.email)
     end
   end
 

@@ -73,7 +73,11 @@ class User < ApplicationRecord
   end
 
   def can_update_book?(book_id)
-    permissions.find_by_name('borrow_books') && books.where(id: book_id)[0]
+    permissions.find_by_name('update_books') || books.where(id: book_id)[0]
+  end
+
+  def can_update_user?(user_id)
+    permissions.find_by_name('update_users') || user_id == id
   end
 
   private

@@ -1,20 +1,16 @@
 <div class="card">
   <div class="image">
-    <% if local_assigns[:avatar].attached? %>
-      <%= image_tag local_assigns[:avatar].variant(resize: "100x100!"), class: "ui image", style: "margin: 0" %>
-    <% else %>
-      <%= image_tag gravatar_image_url(local_assigns[:email], filetype: :png, rating: 'pg', size: 100, secure: false), class: "ui image", style: "margin: 0" %>
-    <% end %>
+    <%= image_tag avatar_url(user.id), class: "ui image", style: "margin: 0" %>
   </div>
   <div class="content">
     <div class="header">
-      <% link_to "#{local_assigns[:first_name]} #{local_assigns[:last_name]}", user_path(local_assigns[:id]) %></div>
+      <%= link_to "#{user.first_name} #{user.last_name}", user_path(user.id) %></div>
     <div class="meta">
     </div>
     <div class="description">
-      <%= local_assigns[:books].length == 1 ? "Book" : "Book".pluralize %>:
+      <%= user.books.length == 1 ? "Book" : "Book".pluralize %>:
       <div class="ui bulleted list">
-        <% local_assigns[:books].each_with_index do |book, index| %>
+        <% user.books.each do |book| %>
           <%= link_to "#{book.title}", book_path(book.id), class: "item" %>
         <% end %>
       </div>

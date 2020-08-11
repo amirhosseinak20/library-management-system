@@ -30,7 +30,7 @@
         </h2>
         <div class="ui horizontal cards">
           <% @authors.each do |author| %>
-            <%= render 'users/card', first_name: author.first_name, last_name: author.last_name, id: author.id, books: author.books, avatar: author.avatar, email: author.email %>
+            <%= render('users/card', {user: author}) %>
           <% end %>
         </div>
       </div>

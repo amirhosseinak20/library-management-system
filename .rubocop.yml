@@ -18,3 +18,5 @@ Style/WordArray:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
+Lint/SafeNavigationChain:
+  Enabled: false

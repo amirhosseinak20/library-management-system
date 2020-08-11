@@ -10,7 +10,7 @@
           <div class="item">
             <div class="ui inline dropdown">
               <div class="text">
-                <%= image_tag user_avatar_url, class: "ui avatar image", alt: "#{user_full_name} avatar" %>
+                <%= image_tag avatar_url(current_user&.id), class: "ui avatar image", alt: "#{user_full_name} avatar" %>
                 <%= user_full_name %>
               </div>
               <i class="dropdown icon"></i>
