@@ -1,22 +1,18 @@
 <div class="ui padded grid">
   <div class="ui row">
-    <div class="ui column">
-      <h2 class="ui header">
-        <%= image_tag "books.png", class: "ui small image" %>
-        <div class="content">
-          Latest <%= link_to "Books", books_path %>
-        </div>
-        <div class="ui right floated basic segment" style="margin: 0em !important; padding: 0em !important;">
-          <%= link_to "More", books_path, class: "ui green button" %>
-        </div>
-      </h2>
-      <div class="ui four column padded grid">
-        <% @books.each do |book| %>
-          <div class="column">
-            <%= render 'books/card', {book: book} %>
-          </div>
-        <% end %>
+    <h2 class="ui header" style="width: 100%; padding: 0em 1rem">
+      <%= image_tag "books.png", class: "ui small image" %>
+      <div class="content">
+        Latest <%= link_to "Books", books_path %>
       </div>
+      <div class="ui right floated basic segment" style="margin: 0em !important; padding: 0em !important;">
+        <%= link_to "More", books_path, class: "ui green button" %>
+      </div>
+    </h2>
+    <div class="ui four cards" style="margin: 0">
+      <% @books.each do |book| %>
+        <%= render 'books/card', {book: book} %>
+      <% end %>
     </div>
   </div>
   <div class="ui row">

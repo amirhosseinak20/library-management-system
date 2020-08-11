@@ -1,4 +1,6 @@
 module ApplicationHelper
+  require 'active_support/core_ext'
+
   def page_title(separator = " | ")
     [content_for(:title), 'Library Management System'].compact.join(separator)
   end

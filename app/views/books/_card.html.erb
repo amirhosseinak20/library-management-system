@@ -1,8 +1,8 @@
-<div class="ui card" style="height: 100%">
-  <div class="image" style="height: 80%; display: flex">
+<div class="ui card">
+  <div class="image">
     <%= image_tag resource_image_url(book.front_cover) %>
   </div>
-  <div class="content">
+  <div class="content" style="display: flex; flex-direction: column;">
     <%= link_to "#{book.title}", book_path(book.id), class: "header" %>
     <div class="meta">
       <%= book.authors.length == 1 ? "Author" : "Author".pluralize %>:
@@ -13,13 +13,21 @@
     <div class="description">
       <%= book.summary %>
     </div>
-    <div class="extra content">
+    <div class="extra content" style="margin-top: auto">
       <% if authenticated? %>
         <% borrow = book_is_borrowed?(book) %>
         <% if borrow %>
+          <small>expiration date: <%= borrow.borrow_date.weeks_since(2).to_formatted_s(:long) %></small>
+          <% if (Date.today - borrow.borrow_date.weeks_since(2)).to_i > 14 %>
+            <div class="ui red message">penalty: <%= (Date.today - borrow.borrow_date.weeks_since(2)).to_i * Borrow::PENALTY %>
+              $
+            </div>
+          <% end %>
           <%= form_with(url: book_borrow_path(book_id: book.id, id: borrow.id), html: {method: :patch}, local: true) do |form| %>
             <%= form.hidden_field :return_date, value: Date.today %>
-            <%= form.button "Return", class: "ui fluid blue button" %>
+            <%= form.button "Return", class: "ui fluid #{Date.today >= borrow.borrow_date.weeks_since(2) ? "red" : "blue"} button" %>
+          <% end %>
+          <% if borrow %>
           <% end %>
         <% elsif current_user.can_borrow_book?(book.id) %>
           <%= form_with(url: book_borrows_path(book_id: book.id), method: "post", local: true) do |form| %>

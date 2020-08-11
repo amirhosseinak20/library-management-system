@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
+    @borrows = current_user.borrows.where(return_date: nil).joins(:book)
   end
 
   def new

@@ -69,7 +69,7 @@ class User < ApplicationRecord
   end
 
   def can_borrow_book?(book_id)
-    borrows.where(return_date: nil).count <= MAX_BORROW_ITEM && permissions.find_by_name('borrow_books')
+    borrows.where(return_date: nil).count < MAX_BORROW_ITEM && permissions.find_by_name('borrow_books')
   end
 
   def can_update_book?(book_id)

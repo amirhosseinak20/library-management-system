@@ -12,9 +12,9 @@ class BorrowsController < ApplicationController
 
     respond_to do |format|
       if @borrow.save
-        format.html { redirect_to @book, notice: 'Book borrowed successfully.' }
+        format.html { redirect_to request.referer || @book, notice: 'Book borrowed successfully.' }
       else
-        format.html { redirect_to @book, notice: 'There was a problem when registering borrow', error: @book.errors }
+        format.html { redirect_to request.referer || @book, notice: 'There was a problem when registering borrow', error: @book.errors }
       end
     end
   end
@@ -24,7 +24,7 @@ class BorrowsController < ApplicationController
     @book = Book.find(params[:book_id])
     respond_to do |format|
       if @borrow.update(borrow_update_params)
-        format.html { redirect_to @book, notice: 'Book returned successfully.' }
+        format.html { redirect_to request.referer || @book, notice: 'Book returned successfully.' }
       else
         format.html { render :edit }
       end

@@ -31,5 +31,16 @@
       <% end %>
     </div>
   </div>
+  <div class="ui divider" style="width: 100%"></div>
+  <% if @borrows.length > 0 && current_user.id == @user.id %>
+    <h2 class="ui header"><i class="ui skull crossbones icon"></i>Borrows</h2>
+    <div class="row">
+      <div class="ui link cards">
+        <% @borrows.each do |borrow| %>
+          <%= render 'books/card', {book: borrow.book, borrow: borrow} %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 </div>
 
