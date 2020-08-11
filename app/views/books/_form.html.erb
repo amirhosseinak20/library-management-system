@@ -15,12 +15,12 @@
 
     <div class="ui segment" style="display: flex; gap: 1rem; align-items: center">
       <%= f.label :front_cover, 'Front Cover' %>
-      <%= image_tag resource_image_url(model, :front_cover), class: "ui circular image", style: "margin: 0" %>
+      <%= image_tag resource_image_url(model.front_cover), class: "ui circular image", style: "margin: 0" %>
       <%= f.file_field :front_cover, accept: 'image/png,image/jpeg,image/svg+xml' %>
     </div>
     <div class="ui segment" style="display: flex; gap: 1rem; align-items: center">
       <%= f.label :back_cover, 'Back Cover' %>
-      <%= image_tag resource_image_url(model, :back_cover), class: "ui circular image", style: "margin: 0" %>
+      <%= image_tag resource_image_url(model.back_cover), class: "ui circular image", style: "margin: 0" %>
       <%= f.file_field :back_cover, accept: 'image/png,image/jpeg,image/svg+xml' %>
     </div>
     <div class="field">

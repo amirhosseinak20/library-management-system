@@ -1,6 +1,6 @@
-<div class="ui card">
-  <div class="image">
-    <%= image_tag "front-cover-placeholder.jpg" %>
+<div class="ui card" style="height: 100%">
+  <div class="image" style="height: 80%; display: flex">
+    <%= image_tag resource_image_url(book.front_cover) %>
   </div>
   <div class="content">
     <%= link_to "#{book.title}", book_path(book.id), class: "header" %>
@@ -14,9 +14,19 @@
       <%= book.summary %>
     </div>
     <div class="extra content">
-      <% if current_user %>
-        <%= form_with(url: book_borrows_path(book_id: book.id), method: "post", local: true) do |form| %>
-          <%= form.submit "Borrow", class: "ui fluid violet button" %>
+      <% if authenticated? %>
+        <% borrow = book_is_borrowed?(book) %>
+        <% if borrow %>
+          <%= form_with(url: book_borrow_path(book_id: book.id, id: borrow.id), html: {method: :patch}, local: true) do |form| %>
+            <%= form.hidden_field :return_date, value: Date.today %>
+            <%= form.button "Return", class: "ui fluid blue button" %>
+          <% end %>
+        <% elsif current_user.can_borrow_book?(book.id) %>
+          <%= form_with(url: book_borrows_path(book_id: book.id), method: "post", local: true) do |form| %>
+            <%= form.submit "Borrow", class: "ui fluid violet button" %>
+          <% end %>
+        <% else %>
+          <small>You reach maximum books borrowed. please return them to borrow more!</small>
         <% end %>
       <% else %>
         <small>Please login/sign up to borrow</small>

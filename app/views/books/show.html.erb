@@ -13,7 +13,7 @@
             <%= form.hidden_field :return_date, value: Date.today %>
             <%= form.button "Return", class: "ui fluid blue button" %>
           <% end %>
-        <% elsif current_user.can_borrow_book?(@book.id) || current_user.can_borrow_books? %>
+        <% elsif current_user.can_borrow_book?(@book.id) %>
           <%= form_with(url: book_borrows_path(book_id: @book.id), method: "post", local: true) do |form| %>
             <%= form.submit "Borrow", class: "ui fluid violet button" %>
           <% end %>

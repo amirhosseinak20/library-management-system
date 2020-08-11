@@ -13,7 +13,7 @@ module ApplicationHelper
 
   def avatar_url(user_id)
     user = User.where(id: user_id)[0]
-    resource_image_url(user, :avatar)
+    resource_image_url(user.avatar)
   end
 
   def numeric?(str)
@@ -30,9 +30,9 @@ module ApplicationHelper
     !!current_user
   end
 
-  def resource_image_url(resource, field)
-    if resource[field]&.attached?
-      url_for(resource[field])
+  def resource_image_url(image_field)
+    if image_field&.attached?
+      url_for(image_field)
     else
       image_url("404.jpg")
     end
